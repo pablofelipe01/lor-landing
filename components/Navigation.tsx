@@ -84,9 +84,6 @@ export function Navigation() {
 
             {/* Desktop CTAs */}
             <div className="hidden lg:flex items-center gap-3">
-              <CTAButton href="/propuesta.pdf" variant="outline" size="sm" download>
-                Descargar PDF
-              </CTAButton>
               <CTAButton href={`#${sectionIds.funding}`} size="sm">
                 Financiar Proyecto
               </CTAButton>
@@ -170,21 +167,13 @@ export function Navigation() {
                 </nav>
 
                 {/* CTAs */}
-                <div className="mt-8 space-y-3">
+                <div className="mt-8">
                   <CTAButton
                     href={`#${sectionIds.funding}`}
                     className="w-full justify-center"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Financiar Proyecto
-                  </CTAButton>
-                  <CTAButton
-                    href="/propuesta.pdf"
-                    variant="outline"
-                    className="w-full justify-center"
-                    download
-                  >
-                    Descargar Propuesta PDF
                   </CTAButton>
                 </div>
 
