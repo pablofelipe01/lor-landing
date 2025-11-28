@@ -10,85 +10,85 @@ const faqs = [
     question: 'Por que mesh LoRa y no tecnologia celular?',
     answer: `Las redes mesh LoRa son ideales para zonas rurales dispersas porque:
 
-• **Costo**: 100-200x mas economico que torres celulares ($400-600 vs $85,000-170,000)
-• **Infraestructura**: No requiere torres ni fibra optica - funciona con nodos solares autonomos
-• **Alcance**: Cada nodo cubre 2-15km sin necesidad de infraestructura adicional
-• **Independencia**: Frecuencias libres (915MHz en LATAM) sin dependencia de operadores
-• **Escalabilidad**: Se agregan nodos segun necesidad real, sin inversiones masivas iniciales`,
+• Costo: 100-200x mas economico que torres celulares ($400-600 vs $85,000-170,000)
+• Infraestructura: No requiere torres ni fibra optica - funciona con nodos solares autonomos
+• Alcance: Cada nodo cubre 2-15km sin necesidad de infraestructura adicional
+• Independencia: Frecuencias libres (915MHz en LATAM) sin dependencia de operadores
+• Escalabilidad: Se agregan nodos segun necesidad real, sin inversiones masivas iniciales`,
   },
   {
     question: 'Como escala el modelo a otras comunidades?',
     answer: `El modelo es inherentemente escalable por su arquitectura modular:
 
-• **Expansion local**: Agregar nodos T1000 ($35 c/u) extiende cobertura inmediatamente
-• **Nuevas comunidades**: Instalacion completa en 2-5 dias vs 6-12 meses tradicional
-• **Costo marginal decreciente**: Infraestructura central ($314) se amortiza entre mas usuarios
-• **Documentacion**: El piloto genera guias replicables para otras regiones
-• **Adaptabilidad**: Misma arquitectura funciona en Colombia, Peru, Ecuador, Bolivia, etc.`,
+• Expansion local: Agregar nodos T1000 ($35 c/u) extiende cobertura inmediatamente
+• Nuevas comunidades: Instalacion completa en 2-5 dias vs 6-12 meses tradicional
+• Costo marginal decreciente: Infraestructura central ($314) se amortiza entre mas usuarios
+• Documentacion: El piloto genera guias replicables para otras regiones
+• Adaptabilidad: Misma arquitectura funciona en Colombia, Peru, Ecuador, Bolivia, etc.`,
   },
   {
     question: 'Que pasa si un dispositivo se dana o se pierde?',
     answer: `El sistema esta disenado para ser resiliente:
 
-• **Costo de reemplazo bajo**: T1000 cuesta $35, telefono Android Go $50
-• **Sin punto unico de falla**: La red mesh continua funcionando si un nodo falla
-• **Durabilidad**: Dispositivos T1000 son resistentes al agua y golpes
-• **Bateria**: Semanas de duracion con uso moderado, recarga solar disponible
-• **Seguro comunitario**: Modelo de fondo comun para reemplazos puede implementarse`,
+• Costo de reemplazo bajo: T1000 cuesta $35, telefono Android Go $50
+• Sin punto unico de falla: La red mesh continua funcionando si un nodo falla
+• Durabilidad: Dispositivos T1000 son resistentes al agua y golpes
+• Bateria: Semanas de duracion con uso moderado, recarga solar disponible
+• Seguro comunitario: Modelo de fondo comun para reemplazos puede implementarse`,
   },
   {
     question: 'Como se mide el impacto educativo?',
     answer: `Metricas claras y verificables:
 
-• **Uso del sistema**: Numero y tipos de consultas a Claude AI por estudiante
-• **Asistencia**: Registro automatico via GPS de llegadas a escuela
-• **Seguridad**: Incidentes prevenidos, tiempo de respuesta a emergencias
-• **Satisfaccion**: Encuestas a padres, maestros y estudiantes
-• **Academico**: Comparacion de rendimiento antes/despues (donde aplique)
-• **Cualitativo**: Testimonios y casos de uso documentados`,
+• Uso del sistema: Numero y tipos de consultas a Claude AI por estudiante
+• Asistencia: Registro automatico via GPS de llegadas a escuela
+• Seguridad: Incidentes prevenidos, tiempo de respuesta a emergencias
+• Satisfaccion: Encuestas a padres, maestros y estudiantes
+• Academico: Comparacion de rendimiento antes/despues (donde aplique)
+• Cualitativo: Testimonios y casos de uso documentados`,
   },
   {
     question: 'Por que usar IA (Claude) y no simplemente SMS?',
     answer: `Claude AI ofrece ventajas educativas que SMS no puede igualar:
 
-• **Respuestas contextuales**: Explica conceptos adaptados al nivel del estudiante
-• **Ilimitado**: No hay biblioteca de respuestas pre-escritas que se agote
-• **Multimateria**: Matematicas, ciencias, historia, idiomas - todo en uno
-• **Interactivo**: El estudiante puede hacer preguntas de seguimiento
-• **Actualizado**: Conocimiento actual sin necesidad de actualizar contenido manualmente
-• **Sin distracciones**: Acceso curado solo a contenido educativo`,
+• Respuestas contextuales: Explica conceptos adaptados al nivel del estudiante
+• Ilimitado: No hay biblioteca de respuestas pre-escritas que se agote
+• Multimateria: Matematicas, ciencias, historia, idiomas - todo en uno
+• Interactivo: El estudiante puede hacer preguntas de seguimiento
+• Actualizado: Conocimiento actual sin necesidad de actualizar contenido manualmente
+• Sin distracciones: Acceso curado solo a contenido educativo`,
   },
   {
     question: 'Que tan seguro es el sistema para los ninos?',
     answer: `Multiples capas de seguridad integradas:
 
-• **GPS tiempo real**: Ubicacion cada 5-10 minutos durante trayectos
-• **Geofencing**: Alertas automaticas al llegar/salir de zonas definidas
-• **Boton de panico**: Respuesta en menos de 10 segundos
-• **Sin redes sociales**: Cero exposicion a contenido inapropiado o extraos
-• **Sin publicidad**: Ambiente 100% educativo
-• **Notificaciones**: Padres informados via mesh, coordinadores via Telegram`,
+• GPS tiempo real: Ubicacion cada 5-10 minutos durante trayectos
+• Geofencing: Alertas automaticas al llegar/salir de zonas definidas
+• Boton de panico: Respuesta en menos de 10 segundos
+• Sin redes sociales: Cero exposicion a contenido inapropiado o extranos
+• Sin publicidad: Ambiente 100% educativo
+• Notificaciones: Padres informados via mesh, coordinadores via Telegram`,
   },
   {
     question: 'Cual es el modelo de sostenibilidad a largo plazo?',
     answer: `Varias vias hacia sostenibilidad:
 
-• **Costo operativo**: ~$118/mes total (Starlink $100 + electricidad $3 + Claude API $15)
-• **1 Starlink = 100+ km²**: Una sola conexion a internet sirve a cientos de usuarios via mesh
-• **Costo por estudiante**: $2-6/mes dependiendo de cantidad de usuarios
-• **Gobierno/municipio**: Inclusion en presupuestos de educacion rural
-• **Cooperativas**: Agricultores pagan por servicio de asistencia tecnica
-• **Subsidio cruzado**: Usuarios agricolas comerciales subsidian educativo`,
+• Costo operativo: ~$118/mes total (Starlink $100 + electricidad $3 + Claude API $15)
+• 1 Starlink = 100+ km²: Una sola conexion a internet sirve a cientos de usuarios via mesh
+• Costo por estudiante: $2-6/mes dependiendo de cantidad de usuarios
+• Gobierno/municipio: Inclusion en presupuestos de educacion rural
+• Cooperativas: Agricultores pagan por servicio de asistencia tecnica
+• Subsidio cruzado: Usuarios agricolas comerciales subsidian educativo`,
   },
   {
     question: 'El proyecto funciona sin electricidad en la escuela?',
     answer: `Si, el sistema es energeticamente autonomo:
 
-• **Nodo solar P1-Pro**: Panel solar integrado, no requiere red electrica
-• **Raspberry Pi**: Consume solo 3-5W, operable con panel solar pequeno
-• **Dispositivos T1000**: Bateria de semanas, recargables via USB solar
-• **Telefonos**: Baterias de 3000-5000mAh duran 2-3 dias, carga solar posible
-• **Sin dependencias criticas**: Sistema opera en zonas completamente off-grid`,
+• Nodo solar P1-Pro: Panel solar integrado, no requiere red electrica
+• Raspberry Pi: Consume solo 3-5W, operable con panel solar pequeno
+• Dispositivos T1000: Bateria de semanas, recargables via USB solar
+• Telefonos: Baterias de 3000-5000mAh duran 2-3 dias, carga solar posible
+• Sin dependencias criticas: Sistema opera en zonas completamente off-grid`,
   },
 ]
 
