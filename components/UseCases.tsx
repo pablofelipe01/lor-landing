@@ -10,7 +10,7 @@ const useCases = [
     id: 'safety',
     title: 'Seguridad Infantil',
     subtitle: 'Protegiendo ninos en trayectos escolares',
-    description: 'Seguimiento GPS de ninos en camino a escuelas rurales. Confirmacion automatica de llegada via Telegram a padres. Boton de emergencia con respuesta en menos de 10 segundos.',
+    description: 'Seguimiento GPS de ninos en camino a escuelas rurales. Confirmacion automatica de llegada a padres via red mesh. Boton de emergencia con respuesta en menos de 10 segundos.',
     image: '/images/use-case-safety.jpeg',
     stats: [
       { value: '95%', label: 'Confirmaciones diarias' },

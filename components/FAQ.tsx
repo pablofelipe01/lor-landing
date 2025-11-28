@@ -67,7 +67,7 @@ const faqs = [
 • **Boton de panico**: Respuesta en menos de 10 segundos
 • **Sin redes sociales**: Cero exposicion a contenido inapropiado o extraos
 • **Sin publicidad**: Ambiente 100% educativo
-• **Notificaciones**: Padres y coordinadores informados via Telegram`,
+• **Notificaciones**: Padres informados via mesh, coordinadores via Telegram`,
   },
   {
     question: 'Cual es el modelo de sostenibilidad a largo plazo?',

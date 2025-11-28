@@ -53,7 +53,7 @@ const flowSteps = [
   { step: 2, title: 'Viaja por red mesh', description: 'Radio LoRa transmite hasta 15km' },
   { step: 3, title: 'Gateway procesa', description: 'Raspberry Pi envia a Claude API' },
   { step: 4, title: 'Respuesta regresa', description: 'Estudiante recibe en 30-60 segundos' },
-  { step: 5, title: 'Padres notificados', description: 'Telegram confirma GPS y actividad' },
+  { step: 5, title: 'Padres notificados', description: 'Red mesh confirma GPS y actividad' },
 ]
 
 export function Solution() {
