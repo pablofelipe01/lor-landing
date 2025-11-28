@@ -72,17 +72,6 @@ export function Hero() {
               </CTAButton>
             </div>
 
-            {/* Trust badges */}
-            <div className="mt-10 pt-8 border-t border-gray-200">
-              <p className="text-sm text-gray-500 mb-4">Dirigido a:</p>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                <span className="px-3 py-1 bg-gray-100 rounded-full">BID</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full">UNICEF</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full">UNESCO</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full">Gates Foundation</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full">Gobiernos LATAM</span>
-              </div>
-            </div>
           </motion.div>
 
           {/* Hero Image */}
