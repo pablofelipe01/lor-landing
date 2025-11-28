@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://lor-landing.vercel.app'),
   title: 'Conectividad Rural LATAM | Redes Mesh LoRa + IA para America Latina',
   description: 'Sistema de bajo costo que lleva seguridad infantil, educacion inteligente y asistencia agricola a zonas rurales sin cobertura movil. 100x mas economico que torres celulares. Conectando 180 millones de personas.',
   keywords: [
