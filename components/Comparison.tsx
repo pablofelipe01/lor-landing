@@ -17,8 +17,8 @@ export function Comparison() {
     },
     {
       feature: t('comparison.operatingCost'),
-      traditional: '$5,000 - $10,000 (50-100 Starlinks)',
-      ours: '$118/mes (1 Starlink + mesh)',
+      traditional: '$5,000 - $10,000',
+      ours: '$118/mes',
       highlight: true,
     },
     {
@@ -160,7 +160,7 @@ export function Comparison() {
                     <td className="py-4 px-4 font-medium text-gray-900">{row.feature}</td>
                     <td className="py-4 px-4 text-center text-gray-500">{row.traditional}</td>
                     <td className="py-4 px-4 text-center">
-                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-primary-100 text-primary-700 rounded-full font-semibold">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-primary-100 text-primary-700 rounded-lg font-semibold text-sm whitespace-nowrap">
                         {row.ours}
                       </span>
                     </td>
