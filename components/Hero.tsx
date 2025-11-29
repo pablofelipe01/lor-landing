@@ -39,7 +39,7 @@ export function Hero() {
 
             <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-xl">
               {t('hero.description')} <strong>{t('hero.safety')}</strong>,{' '}
-              <strong>{t('hero.education')}</strong> {t('hero.descriptionEnd').includes('y') ? 'y' : 'and'}{' '}
+              <strong>{t('hero.education')}</strong> {t('hero.and')}{' '}
               <strong>{t('hero.agriculture')}</strong> {t('hero.descriptionEnd')}{' '}
               <span className="text-primary-600 font-semibold">
                 {t('hero.cheaper')}
