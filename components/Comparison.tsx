@@ -75,7 +75,7 @@ export function Comparison() {
     {
       feature: t('comparison.costPerStudent'),
       traditional: '$20 - $50',
-      ours: '$2-6',
+      ours: '<$1',
       better: 'ours',
     },
     {
@@ -114,7 +114,7 @@ export function Comparison() {
               <div className="mt-2 text-primary-100">{t('comparison.fasterImplementation')}</div>
             </div>
             <div>
-              <div className="text-5xl md:text-6xl font-bold font-mono">$2-6</div>
+              <div className="text-5xl md:text-6xl font-bold font-mono">&lt;$1</div>
               <div className="mt-2 text-primary-100">{t('comparison.perStudent')}</div>
             </div>
           </div>
