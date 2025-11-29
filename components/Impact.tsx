@@ -125,7 +125,7 @@ export function Impact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-2xl font-bold mb-8 text-center">Retorno de Inversion Documentado</h3>
+          <h3 className="text-2xl font-bold mb-8 text-center">Impacto Economico Documentado</h3>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {economicReturns.map((item, index) => (

@@ -14,7 +14,7 @@ const faqs = [
 • Infraestructura: No requiere torres ni fibra optica - funciona con nodos solares autonomos
 • Alcance: Cada nodo cubre 2-15km sin necesidad de infraestructura adicional
 • Independencia: Frecuencias libres (915MHz en LATAM) sin dependencia de operadores
-• Escalabilidad: Se agregan nodos segun necesidad real, sin inversiones masivas iniciales`,
+• Escalabilidad: Se agregan nodos segun necesidad real, sin grandes costos iniciales`,
   },
   {
     question: 'Como escala el modelo a otras comunidades?',

@@ -9,7 +9,7 @@ const comparisonData = {
     title: 'Comparacion de Infraestructura',
     rows: [
       {
-        feature: 'Inversion inicial',
+        feature: 'Costo inicial',
         traditional: '$85,000 - $170,000',
         ours: '$400 - $600',
         highlight: true,

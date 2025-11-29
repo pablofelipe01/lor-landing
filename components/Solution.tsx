@@ -101,7 +101,7 @@ export function Solution() {
             {/* Total cost */}
             <div className="mt-6 p-4 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl text-white">
               <div className="flex items-center justify-between">
-                <span className="font-semibold">Inversion total infraestructura</span>
+                <span className="font-semibold">Costo total infraestructura</span>
                 <span className="text-2xl font-bold font-mono">$400-600</span>
               </div>
               <p className="text-sm opacity-80 mt-1">vs $85,000-170,000 torre celular tradicional</p>
