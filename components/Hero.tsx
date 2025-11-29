@@ -4,8 +4,11 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { CTAButton } from './ui'
 import { sectionIds } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 
 export function Hero() {
+  const { t } = useI18n()
+
   return (
     <section
       id={sectionIds.hero}
@@ -25,44 +28,44 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent-100 text-accent-700 rounded-full text-sm font-semibold mb-6">
               <span className="w-2 h-2 bg-accent-500 rounded-full animate-pulse" />
-              Proyecto Piloto - America Latina
+              {t('hero.badge')}
             </span>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight text-gray-900 text-balance">
-              Conectando{' '}
-              <span className="gradient-text">180 millones</span>{' '}
-              de personas rurales con IA
+              {t('hero.title1')}{' '}
+              <span className="gradient-text">{t('hero.title2')}</span>{' '}
+              {t('hero.title3')}
             </h1>
 
             <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-xl">
-              Sistema de bajo costo que lleva <strong>seguridad infantil</strong>,{' '}
-              <strong>educacion inteligente</strong> y{' '}
-              <strong>asistencia agricola</strong> a zonas sin cobertura movil.{' '}
+              {t('hero.description')} <strong>{t('hero.safety')}</strong>,{' '}
+              <strong>{t('hero.education')}</strong> {t('hero.descriptionEnd').includes('y') ? 'y' : 'and'}{' '}
+              <strong>{t('hero.agriculture')}</strong> {t('hero.descriptionEnd')}{' '}
               <span className="text-primary-600 font-semibold">
-                100x mas economico que torres celulares.
+                {t('hero.cheaper')}
               </span>
             </p>
 
             {/* Key stats inline */}
             <div className="mt-8 flex flex-wrap gap-8">
               <div>
-                <div className="text-3xl font-bold text-primary-600 font-mono">100+ km²</div>
-                <div className="text-sm text-gray-500">Con 1 conexion internet</div>
+                <div className="text-3xl font-bold text-primary-600 font-mono">{t('hero.stat1Value')}</div>
+                <div className="text-sm text-gray-500">{t('hero.stat1Label')}</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-secondary-600 font-mono">$2-6/mes</div>
-                <div className="text-sm text-gray-500">Por estudiante</div>
+                <div className="text-3xl font-bold text-secondary-600 font-mono">{t('hero.stat2Value')}</div>
+                <div className="text-sm text-gray-500">{t('hero.stat2Label')}</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-accent-600 font-mono">2-5 dias</div>
-                <div className="text-sm text-gray-500">Implementacion</div>
+                <div className="text-3xl font-bold text-accent-600 font-mono">{t('hero.stat3Value')}</div>
+                <div className="text-sm text-gray-500">{t('hero.stat3Label')}</div>
               </div>
             </div>
 
             {/* CTAs */}
             <div className="mt-10">
               <CTAButton href={`#${sectionIds.funding}`} size="lg">
-                Financiar Proyecto
+                {t('hero.cta')}
               </CTAButton>
             </div>
 
@@ -78,7 +81,7 @@ export function Hero() {
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
               <Image
                 src="/images/hero-student-path.jpeg"
-                alt="Nina rural caminando a la escuela con dispositivo de seguridad"
+                alt={t('hero.imageAlt')}
                 fill
                 className="object-cover"
                 priority
@@ -96,8 +99,8 @@ export function Hero() {
                     </svg>
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Maria llego a Escuela El Cacao</p>
-                    <p className="text-sm text-gray-500">Hace 2 minutos - GPS confirmado</p>
+                    <p className="font-semibold text-gray-900">{t('hero.notification')}</p>
+                    <p className="text-sm text-gray-500">{t('hero.notificationTime')}</p>
                   </div>
                 </div>
               </div>
@@ -121,7 +124,7 @@ export function Hero() {
           href={`#${sectionIds.problem}`}
           className="flex flex-col items-center text-gray-400 hover:text-primary-600 transition-colors"
         >
-          <span className="text-sm mb-2">Descubre mas</span>
+          <span className="text-sm mb-2">{t('hero.scroll')}</span>
           <motion.svg
             className="w-6 h-6"
             fill="none"

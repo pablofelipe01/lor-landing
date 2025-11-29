@@ -4,103 +4,106 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { SectionHeader, StatCard } from './ui'
 import { sectionIds } from '@/lib/utils'
-
-const stats = [
-  {
-    value: '77',
-    suffix: 'M',
-    label: 'Habitantes rurales',
-    description: 'Sin acceso a internet de calidad en America Latina',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
-  {
-    value: '30',
-    suffix: 'M',
-    label: 'Estudiantes rurales',
-    description: 'Sin acceso a recursos educativos digitales',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-      </svg>
-    ),
-  },
-  {
-    value: '150',
-    prefix: '$',
-    suffix: 'B',
-    label: 'Perdidas anuales',
-    description: 'En el sector agricola por falta de informacion',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-  },
-  {
-    value: '44',
-    suffix: 'M',
-    label: 'Sin cobertura movil',
-    description: '7% de la poblacion completamente desconectada',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414" />
-      </svg>
-    ),
-  },
-]
-
-const impacts = [
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-    ),
-    title: 'Seguridad infantil',
-    description: 'Millones de ninos caminan 1-2 horas diarias a escuelas rurales sin supervision. Padres sin forma de confirmar que llegaron.',
-  },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-    title: 'Brecha educativa',
-    description: 'Estudiantes rurales sin acceso a recursos de aprendizaje digitales mientras sus pares urbanos avanzan.',
-  },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-      </svg>
-    ),
-    title: 'Baja productividad',
-    description: 'Solo 20-30% de agricultores reciben asistencia tecnica. 220M de toneladas de perdidas postcosecha anuales.',
-  },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: 'Respuesta lenta',
-    description: 'Emergencias sin capacidad de coordinar asistencia urgente. Comunidades indigenas aisladas de servicios basicos.',
-  },
-]
+import { useI18n } from '@/lib/i18n'
 
 export function Problem() {
+  const { t } = useI18n()
+
+  const stats = [
+    {
+      value: t('problem.stat1Value2'),
+      suffix: t('problem.stat1Suffix'),
+      label: t('problem.stat1Label2'),
+      description: t('problem.stat1Desc2'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
+    {
+      value: t('problem.stat2Value2'),
+      suffix: t('problem.stat2Suffix'),
+      label: t('problem.stat2Label2'),
+      description: t('problem.stat2Desc2'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      ),
+    },
+    {
+      value: t('problem.stat3Value2'),
+      prefix: t('problem.stat3Prefix'),
+      suffix: t('problem.stat3Suffix'),
+      label: t('problem.stat3Label2'),
+      description: t('problem.stat3Desc2'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+    },
+    {
+      value: t('problem.stat4Value2'),
+      suffix: t('problem.stat4Suffix'),
+      label: t('problem.stat4Label2'),
+      description: t('problem.stat4Desc2'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414" />
+        </svg>
+      ),
+    },
+  ]
+
+  const impacts = [
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      ),
+      title: t('problem.impact1Title'),
+      description: t('problem.impact1Desc'),
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
+      title: t('problem.impact2Title'),
+      description: t('problem.impact2Desc'),
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+        </svg>
+      ),
+      title: t('problem.impact3Title'),
+      description: t('problem.impact3Desc'),
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: t('problem.impact4Title'),
+      description: t('problem.impact4Desc'),
+    },
+  ]
+
   return (
     <section id={sectionIds.problem} className="section-padding bg-gray-50">
       <div className="container-custom">
         <SectionHeader
-          badge="El Problema"
-          title="La Crisis de Conectividad Rural"
-          subtitle="La brecha digital rural-urbana en America Latina alcanza 36 puntos porcentuales, afectando a las poblaciones mas vulnerables."
+          badge={t('problem.badge')}
+          title={t('problem.title')}
+          subtitle={t('problem.subtitle')}
         />
 
         {/* Stats Grid */}
@@ -127,7 +130,7 @@ export function Problem() {
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src="/images/problem-rural-school.jpeg"
-                alt="Escuela rural en America Latina"
+                alt={t('problem.imageAlt')}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -143,8 +146,8 @@ export function Problem() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">36 pts</p>
-                  <p className="text-sm text-gray-500">Brecha digital rural-urbana</p>
+                  <p className="text-2xl font-bold text-gray-900">{t('problem.gapValue')}</p>
+                  <p className="text-sm text-gray-500">{t('problem.gapLabel')}</p>
                 </div>
               </div>
             </div>
@@ -158,7 +161,7 @@ export function Problem() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-2xl font-bold text-gray-900">Consecuencias Criticas</h3>
+            <h3 className="text-2xl font-bold text-gray-900">{t('problem.impactsTitle')}</h3>
             {impacts.map((impact, index) => (
               <motion.div
                 key={impact.title}
@@ -195,14 +198,14 @@ export function Problem() {
                 </svg>
               </div>
               <div>
-                <h4 className="text-xl font-bold text-gray-900">Soluciones tradicionales inviables</h4>
-                <p className="text-gray-600">Torres celulares: $85,000-170,000 | Fibra optica: $40,000-80,000/km</p>
+                <h4 className="text-xl font-bold text-gray-900">{t('problem.bottomTitle')}</h4>
+                <p className="text-gray-600">{t('problem.bottomDesc')}</p>
               </div>
             </div>
             <div className="text-center md:text-right">
-              <p className="text-sm text-gray-500">Requieren densidades de</p>
-              <p className="text-2xl font-bold text-red-600">100-500 usuarios/km2</p>
-              <p className="text-sm text-gray-500">para ser rentables</p>
+              <p className="text-sm text-gray-500">{t('problem.bottomRequires')}</p>
+              <p className="text-2xl font-bold text-red-600">{t('problem.bottomDensity')}</p>
+              <p className="text-sm text-gray-500">{t('problem.bottomRentable')}</p>
             </div>
           </div>
         </motion.div>

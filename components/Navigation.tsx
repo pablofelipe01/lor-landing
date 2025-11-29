@@ -4,19 +4,21 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CTAButton } from './ui'
 import { sectionIds } from '@/lib/utils'
-
-const navItems = [
-  { label: 'Problema', href: `#${sectionIds.problem}` },
-  { label: 'Solucion', href: `#${sectionIds.solution}` },
-  { label: 'Casos de Uso', href: `#${sectionIds.useCases}` },
-  { label: 'Impacto', href: `#${sectionIds.impact}` },
-  { label: 'Roadmap', href: `#${sectionIds.roadmap}` },
-  { label: 'FAQ', href: `#${sectionIds.faq}` },
-]
+import { useI18n } from '@/lib/i18n'
 
 export function Navigation() {
+  const { language, setLanguage, t } = useI18n()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const navItems = [
+    { label: t('nav.problem'), href: `#${sectionIds.problem}` },
+    { label: t('nav.solution'), href: `#${sectionIds.solution}` },
+    { label: t('nav.useCases'), href: `#${sectionIds.useCases}` },
+    { label: t('nav.impact'), href: `#${sectionIds.impact}` },
+    { label: t('nav.roadmap'), href: `#${sectionIds.roadmap}` },
+    { label: t('nav.faq'), href: `#${sectionIds.faq}` },
+  ]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +38,10 @@ export function Navigation() {
       document.body.style.overflow = ''
     }
   }, [isMobileMenuOpen])
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'es' ? 'en' : 'es')
+  }
 
   return (
     <>
@@ -63,7 +69,7 @@ export function Navigation() {
               <span className={`font-bold text-lg hidden sm:block transition-colors ${
                 isScrolled ? 'text-gray-900' : 'text-gray-900'
               }`}>
-                Conectividad Rural
+                {language === 'es' ? 'Conectividad Rural' : 'Rural Connectivity'}
               </span>
             </a>
 
@@ -82,32 +88,58 @@ export function Navigation() {
               ))}
             </div>
 
-            {/* Desktop CTAs */}
+            {/* Desktop CTAs + Language Switcher */}
             <div className="hidden lg:flex items-center gap-3">
+              {/* Language Switcher */}
+              <button
+                onClick={toggleLanguage}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  isScrolled
+                    ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-white/80 text-gray-700 hover:bg-white'
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                {language === 'es' ? 'EN' : 'ES'}
+              </button>
+
               <CTAButton href={`#${sectionIds.funding}`} size="sm">
-                Financiar Proyecto
+                {t('nav.fundProject')}
               </CTAButton>
             </div>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-              aria-label="Toggle menu"
-            >
-              <svg
-                className={`w-6 h-6 transition-colors ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {/* Mobile: Language + Menu button */}
+            <div className="flex lg:hidden items-center gap-2">
+              {/* Language Switcher Mobile */}
+              <button
+                onClick={toggleLanguage}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
               >
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
+                {language === 'es' ? 'EN' : 'ES'}
+              </button>
+
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                aria-label="Toggle menu"
+              >
+                <svg
+                  className={`w-6 h-6 transition-colors ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {isMobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>
@@ -173,14 +205,17 @@ export function Navigation() {
                     className="w-full justify-center"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Financiar Proyecto
+                    {t('nav.fundProject')}
                   </CTAButton>
                 </div>
 
                 {/* Bottom info */}
                 <div className="mt-8 pt-8 border-t border-gray-200">
                   <p className="text-sm text-gray-500 text-center">
-                    Protegiendo ninos • Democratizando educacion
+                    {language === 'es'
+                      ? 'Protegiendo ninos • Democratizando educacion'
+                      : 'Protecting children • Democratizing education'
+                    }
                   </p>
                 </div>
               </div>

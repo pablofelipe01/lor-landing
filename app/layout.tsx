@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Providers } from './providers'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lor-landing.vercel.app'),
@@ -72,7 +73,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#0ea5e9" />
       </head>
       <body className="min-h-screen bg-white antialiased">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

@@ -4,75 +4,85 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { SectionHeader } from './ui'
 import { sectionIds } from '@/lib/utils'
-
-const useCases = [
-  {
-    id: 'safety',
-    title: 'Seguridad Infantil',
-    subtitle: 'Protegiendo ninos en trayectos escolares',
-    description: 'Seguimiento GPS de ninos en camino a escuelas rurales. Confirmacion automatica de llegada a padres via red mesh. Boton de emergencia con respuesta en menos de 10 segundos.',
-    image: '/images/use-case-safety.jpeg',
-    stats: [
-      { value: '95%', label: 'Confirmaciones diarias' },
-      { value: '<10s', label: 'Respuesta emergencia' },
-      { value: '5-10min', label: 'Actualizaciones GPS' },
-    ],
-    features: [
-      'Transmision GPS cada 5-10 minutos durante trayecto',
-      'Alerta automatica al llegar a perimetro escolar',
-      'Boton de panico con ubicacion exacta',
-      'Notificacion automatica a padres via mesh',
-    ],
-    color: 'secondary',
-  },
-  {
-    id: 'education',
-    title: 'Educacion Curada',
-    subtitle: 'IA educativa sin redes sociales',
-    description: 'Acceso exclusivo a Claude AI para consultas educativas. Sin exposicion a redes sociales, publicidad o contenido inapropiado. Internet inteligente 100% enfocado en aprendizaje.',
-    image: '/images/use-case-education.jpeg',
-    stats: [
-      { value: '100%', label: 'Contenido educativo' },
-      { value: '0', label: 'Redes sociales' },
-      { value: '30-60s', label: 'Tiempo respuesta' },
-    ],
-    features: [
-      'Consultas de matematicas, ciencias, historia',
-      'Ayuda con tareas y comprension de textos',
-      'Recursos para maestros y planes de clase',
-      'Sin publicidad ni distracciones',
-    ],
-    color: 'accent',
-  },
-  {
-    id: 'agriculture',
-    title: 'Productividad Agricola',
-    subtitle: 'Asistencia tecnica en tiempo real',
-    description: 'Diagnostico de plagas, recomendaciones de fertilizacion, alertas climaticas. Agricultores con acceso a informacion digital obtienen precios 15-20% superiores.',
-    image: '/images/use-case-agriculture.jpeg',
-    stats: [
-      { value: '+15%', label: 'Mejores precios' },
-      { value: '24/7', label: 'Disponibilidad' },
-      { value: '-12%', label: 'Perdidas postcosecha' },
-    ],
-    features: [
-      'Identificacion de plagas y enfermedades',
-      'Calendario de fertilizacion optimizado',
-      'Alertas meteorologicas criticas',
-      'Acceso a precios de mercado',
-    ],
-    color: 'primary',
-  },
-]
+import { useI18n } from '@/lib/i18n'
 
 export function UseCases() {
+  const { t } = useI18n()
+
+  const useCases = [
+    {
+      id: 'safety',
+      title: t('useCases.safety.title'),
+      subtitle: t('useCases.safety.subtitle'),
+      description: t('useCases.safety.description'),
+      image: '/images/use-case-safety.jpeg',
+      stats: [
+        { value: t('useCases.safety.stat1Value'), label: t('useCases.safety.stat1Label') },
+        { value: t('useCases.safety.stat2Value'), label: t('useCases.safety.stat2Label') },
+        { value: t('useCases.safety.stat3Value'), label: t('useCases.safety.stat3Label') },
+      ],
+      features: [
+        t('useCases.safety.feature1'),
+        t('useCases.safety.feature2'),
+        t('useCases.safety.feature3'),
+        t('useCases.safety.feature4'),
+      ],
+      color: 'secondary',
+    },
+    {
+      id: 'education',
+      title: t('useCases.education.title'),
+      subtitle: t('useCases.education.subtitle'),
+      description: t('useCases.education.description'),
+      image: '/images/use-case-education.jpeg',
+      stats: [
+        { value: t('useCases.education.stat1Value'), label: t('useCases.education.stat1Label') },
+        { value: t('useCases.education.stat2Value'), label: t('useCases.education.stat2Label') },
+        { value: t('useCases.education.stat3Value'), label: t('useCases.education.stat3Label') },
+      ],
+      features: [
+        t('useCases.education.feature1'),
+        t('useCases.education.feature2'),
+        t('useCases.education.feature3'),
+        t('useCases.education.feature4'),
+      ],
+      color: 'accent',
+    },
+    {
+      id: 'agriculture',
+      title: t('useCases.agriculture.title'),
+      subtitle: t('useCases.agriculture.subtitle'),
+      description: t('useCases.agriculture.description'),
+      image: '/images/use-case-agriculture.jpeg',
+      stats: [
+        { value: t('useCases.agriculture.stat1Value'), label: t('useCases.agriculture.stat1Label') },
+        { value: t('useCases.agriculture.stat2Value'), label: t('useCases.agriculture.stat2Label') },
+        { value: t('useCases.agriculture.stat3Value'), label: t('useCases.agriculture.stat3Label') },
+      ],
+      features: [
+        t('useCases.agriculture.feature1'),
+        t('useCases.agriculture.feature2'),
+        t('useCases.agriculture.feature3'),
+        t('useCases.agriculture.feature4'),
+      ],
+      color: 'primary',
+    },
+  ]
+
+  const additionalUseCases = [
+    t('useCases.forestRangers'),
+    t('useCases.indigenous'),
+    t('useCases.medical'),
+    t('useCases.community'),
+  ]
+
   return (
     <section id={sectionIds.useCases} className="section-padding bg-gray-50">
       <div className="container-custom">
         <SectionHeader
-          badge="Casos de Uso"
-          title="Impacto en Tres Frentes Criticos"
-          subtitle="Un sistema, multiples beneficios para comunidades rurales desconectadas."
+          badge={t('useCases.badge')}
+          title={t('useCases.title')}
+          subtitle={t('useCases.subtitle')}
         />
 
         <div className="space-y-20">
@@ -172,14 +182,9 @@ export function UseCases() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-gray-500 mb-6">Tambien aplicable a:</p>
+          <p className="text-gray-500 mb-6">{t('useCases.alsoApplicable')}</p>
           <div className="flex flex-wrap justify-center gap-4">
-            {[
-              'Guardabosques y conservacion',
-              'Comunidades indigenas',
-              'Emergencias medicas',
-              'Coordinacion comunitaria',
-            ].map((item) => (
+            {additionalUseCases.map((item) => (
               <span
                 key={item}
                 className="px-4 py-2 bg-white rounded-full text-sm text-gray-700 shadow-sm border border-gray-100"

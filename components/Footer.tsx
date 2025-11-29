@@ -4,17 +4,20 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { CTAButton } from './ui'
 import { sectionIds } from '@/lib/utils'
-
-const navLinks = [
-  { label: 'Problema', href: `#${sectionIds.problem}` },
-  { label: 'Solucion', href: `#${sectionIds.solution}` },
-  { label: 'Casos de Uso', href: `#${sectionIds.useCases}` },
-  { label: 'Impacto', href: `#${sectionIds.impact}` },
-  { label: 'Roadmap', href: `#${sectionIds.roadmap}` },
-  { label: 'FAQ', href: `#${sectionIds.faq}` },
-]
+import { useI18n } from '@/lib/i18n'
 
 export function Footer() {
+  const { t } = useI18n()
+
+  const navLinks = [
+    { label: t('nav.problem'), href: `#${sectionIds.problem}` },
+    { label: t('nav.solution'), href: `#${sectionIds.solution}` },
+    { label: t('nav.useCases'), href: `#${sectionIds.useCases}` },
+    { label: t('nav.impact'), href: `#${sectionIds.impact}` },
+    { label: t('nav.roadmap'), href: `#${sectionIds.roadmap}` },
+    { label: t('nav.faq'), href: `#${sectionIds.faq}` },
+  ]
+
   return (
     <footer className="bg-gray-900 text-white">
       {/* Pre-footer CTA */}
@@ -27,15 +30,14 @@ export function Footer() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Listo para Transformar la Conectividad Rural?
+              {t('footer.ctaTitle')}
             </h2>
             <p className="text-gray-400 mb-8">
-              Unase a nosotros en este proyecto que protege ninos, democratiza la educacion
-              e impulsa la productividad de 180 millones de personas.
+              {t('footer.ctaSubtitle')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <CTAButton href={`#${sectionIds.funding}`} size="lg">
-                Financiar Proyecto
+                {t('nav.fundProject')}
               </CTAButton>
             </div>
           </motion.div>
@@ -56,11 +58,10 @@ export function Footer() {
               <span className="text-xl font-bold">Conectividad Rural LATAM</span>
             </div>
             <p className="text-gray-400 max-w-md mb-6">
-              Sistema de bajo costo que lleva seguridad, educacion e IA a zonas rurales
-              sin cobertura movil mediante redes mesh LoRa.
+              {t('footer.brandDesc')}
             </p>
             <div className="flex items-center gap-2 text-sm text-gray-500">
-              <span>Tecnologias:</span>
+              <span>{t('footer.technologies')}</span>
               <span className="px-2 py-1 bg-gray-800 rounded">Meshtastic</span>
               <span className="px-2 py-1 bg-gray-800 rounded">LoRa</span>
               <span className="px-2 py-1 bg-gray-800 rounded">Claude AI</span>
@@ -70,7 +71,7 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="font-semibold mb-4">Navegacion</h4>
+            <h4 className="font-semibold mb-4">{t('footer.navigation')}</h4>
             <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -87,7 +88,7 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-4">Recursos</h4>
+            <h4 className="font-semibold mb-4">{t('footer.resources')}</h4>
             <ul className="space-y-2">
               <li>
                 <a
@@ -139,7 +140,7 @@ export function Footer() {
             </a>
             <div className="text-center md:text-left">
               <p className="text-gray-400 text-sm">
-                Un desarrollo de <span className="text-white font-semibold">Inverse Neural Lab</span>
+                {t('footer.developedBy')} <span className="text-white font-semibold">Inverse Neural Lab</span>
               </p>
               <a
                 href="mailto:data@inverseneurallab.com"
@@ -179,10 +180,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-sm">
-            2025 Conectividad Rural LATAM. Proyecto de codigo abierto.
+            {t('footer.copyright')}
           </p>
           <p className="text-gray-500 text-sm">
-            Protegiendo ninos • Democratizando educacion • Impulsando productividad rural
+            {t('footer.slogan')}
           </p>
         </div>
       </div>

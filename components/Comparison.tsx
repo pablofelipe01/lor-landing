@@ -3,100 +3,96 @@
 import { motion } from 'framer-motion'
 import { SectionHeader } from './ui'
 import { sectionIds } from '@/lib/utils'
-
-const comparisonData = {
-  infrastructure: {
-    title: 'Comparacion de Infraestructura',
-    rows: [
-      {
-        feature: 'Costo inicial',
-        traditional: '$85,000 - $170,000',
-        ours: '$400 - $600',
-        highlight: true,
-      },
-      {
-        feature: 'Costo operativo mensual',
-        traditional: '$5,000 - $10,000 (50-100 Starlinks)',
-        ours: '$118/mes (1 Starlink + mesh)',
-        highlight: true,
-      },
-      {
-        feature: 'Tiempo de implementacion',
-        traditional: '6 - 12 meses',
-        ours: '2 - 5 dias',
-        highlight: true,
-      },
-      {
-        feature: 'Escalabilidad',
-        traditional: 'Baja',
-        ours: 'Muy alta',
-        highlight: false,
-      },
-      {
-        feature: 'Dependencia electrica',
-        traditional: 'Red electrica',
-        ours: 'Solar 100%',
-        highlight: false,
-      },
-      {
-        feature: 'Densidad requerida',
-        traditional: '100-500 usuarios/km2',
-        ours: 'Sin requisitos',
-        highlight: true,
-      },
-    ],
-  },
-  features: {
-    title: 'Comparacion de Caracteristicas',
-    rows: [
-      {
-        feature: 'Redes sociales',
-        traditional: 'Si (distraccion)',
-        ours: 'No',
-        better: 'ours',
-      },
-      {
-        feature: 'Publicidad',
-        traditional: 'Si',
-        ours: 'Cero',
-        better: 'ours',
-      },
-      {
-        feature: 'Contenido educativo',
-        traditional: 'Mezclado',
-        ours: '100%',
-        better: 'ours',
-      },
-      {
-        feature: 'Seguridad GPS integrada',
-        traditional: 'No',
-        ours: 'Integrado',
-        better: 'ours',
-      },
-      {
-        feature: 'Costo por estudiante/mes',
-        traditional: '$20 - $50',
-        ours: '$2-6',
-        better: 'ours',
-      },
-      {
-        feature: 'Requiere cobertura movil',
-        traditional: 'Si',
-        ours: 'No',
-        better: 'ours',
-      },
-    ],
-  },
-}
+import { useI18n } from '@/lib/i18n'
 
 export function Comparison() {
+  const { t } = useI18n()
+
+  const infrastructureRows = [
+    {
+      feature: t('comparison.initialCost'),
+      traditional: '$85,000 - $170,000',
+      ours: '$400 - $600',
+      highlight: true,
+    },
+    {
+      feature: t('comparison.operatingCost'),
+      traditional: '$5,000 - $10,000 (50-100 Starlinks)',
+      ours: '$118/mes (1 Starlink + mesh)',
+      highlight: true,
+    },
+    {
+      feature: t('comparison.implementationTime'),
+      traditional: '6 - 12 meses',
+      ours: '2 - 5 dias',
+      highlight: true,
+    },
+    {
+      feature: t('comparison.scalability'),
+      traditional: 'Baja',
+      ours: 'Muy alta',
+      highlight: false,
+    },
+    {
+      feature: t('comparison.powerDependency'),
+      traditional: 'Red electrica',
+      ours: 'Solar 100%',
+      highlight: false,
+    },
+    {
+      feature: t('comparison.densityRequired'),
+      traditional: '100-500 usuarios/km2',
+      ours: 'Sin requisitos',
+      highlight: true,
+    },
+  ]
+
+  const featureRows = [
+    {
+      feature: t('comparison.socialMedia'),
+      traditional: 'Si (distraccion)',
+      ours: 'No',
+      better: 'ours',
+    },
+    {
+      feature: t('comparison.advertising'),
+      traditional: 'Si',
+      ours: 'Cero',
+      better: 'ours',
+    },
+    {
+      feature: t('comparison.educationalContent'),
+      traditional: 'Mezclado',
+      ours: '100%',
+      better: 'ours',
+    },
+    {
+      feature: t('comparison.integratedGPS'),
+      traditional: 'No',
+      ours: 'Integrado',
+      better: 'ours',
+    },
+    {
+      feature: t('comparison.costPerStudent'),
+      traditional: '$20 - $50',
+      ours: '$2-6',
+      better: 'ours',
+    },
+    {
+      feature: t('comparison.requiresMobile'),
+      traditional: 'Si',
+      ours: 'No',
+      better: 'ours',
+    },
+  ]
+
   return (
     <section id={sectionIds.comparison} className="section-padding bg-white">
       <div className="container-custom">
         <SectionHeader
-          badge="Por Que Funciona"
-          title="Ventajas Competitivas Claras"
-          subtitle="El sistema reduce costos entre 100x y 200x comparado con torres celulares tradicionales, con implementacion 100 veces mas rapida."
+          badge={t('comparison.badge')}
+          title={t('comparison.title')}
+          subtitle={t('comparison.subtitle')}
         />
 
         {/* Main comparison highlight */}
@@ -111,15 +107,15 @@ export function Comparison() {
           <div className="relative z-10 grid md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-5xl md:text-6xl font-bold font-mono">100-200x</div>
-              <div className="mt-2 text-primary-100">Reduccion de costos</div>
+              <div className="mt-2 text-primary-100">{t('comparison.costReduction')}</div>
             </div>
             <div>
               <div className="text-5xl md:text-6xl font-bold font-mono">100x</div>
-              <div className="mt-2 text-primary-100">Mas rapida implementacion</div>
+              <div className="mt-2 text-primary-100">{t('comparison.fasterImplementation')}</div>
             </div>
             <div>
               <div className="text-5xl md:text-6xl font-bold font-mono">$2-6</div>
-              <div className="mt-2 text-primary-100">Por estudiante/mes</div>
+              <div className="mt-2 text-primary-100">{t('comparison.perStudent')}</div>
             </div>
           </div>
         </motion.div>
@@ -131,28 +127,28 @@ export function Comparison() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">{comparisonData.infrastructure.title}</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('comparison.infraTitle')}</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-4 px-4 font-semibold text-gray-500">Caracteristica</th>
+                  <th className="text-left py-4 px-4 font-semibold text-gray-500">{t('comparison.feature')}</th>
                   <th className="text-center py-4 px-4 font-semibold text-gray-500">
                     <div className="flex items-center justify-center gap-2">
                       <span className="w-3 h-3 bg-gray-300 rounded-full" />
-                      Tradicional
+                      {t('comparison.traditional')}
                     </div>
                   </th>
                   <th className="text-center py-4 px-4 font-semibold text-primary-600">
                     <div className="flex items-center justify-center gap-2">
                       <span className="w-3 h-3 bg-primary-500 rounded-full" />
-                      Nuestra Solucion
+                      {t('comparison.ourSolution')}
                     </div>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {comparisonData.infrastructure.rows.map((row, index) => (
+                {infrastructureRows.map((row, index) => (
                   <motion.tr
                     key={row.feature}
                     className={`border-b border-gray-100 ${row.highlight ? 'bg-primary-50/50' : ''}`}
@@ -181,18 +177,18 @@ export function Comparison() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">{comparisonData.features.title}</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('comparison.featuresTitle')}</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-4 px-4 font-semibold text-gray-500">Caracteristica</th>
-                  <th className="text-center py-4 px-4 font-semibold text-gray-500">Internet Tradicional</th>
-                  <th className="text-center py-4 px-4 font-semibold text-primary-600">Nuestro Sistema</th>
+                  <th className="text-left py-4 px-4 font-semibold text-gray-500">{t('comparison.feature')}</th>
+                  <th className="text-center py-4 px-4 font-semibold text-gray-500">{t('comparison.traditionalInternet')}</th>
+                  <th className="text-center py-4 px-4 font-semibold text-primary-600">{t('comparison.ourSystem')}</th>
                 </tr>
               </thead>
               <tbody>
-                {comparisonData.features.rows.map((row, index) => (
+                {featureRows.map((row, index) => (
                   <motion.tr
                     key={row.feature}
                     className="border-b border-gray-100"
@@ -234,11 +230,9 @@ export function Comparison() {
               </svg>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900">Por que Telegram y no WhatsApp?</h4>
+              <h4 className="font-semibold text-gray-900">{t('comparison.whyTelegram')}</h4>
               <p className="mt-1 text-gray-600">
-                API completamente gratuita, codigo abierto, bots nativos para automatizacion,
-                sin dependencia de Meta, y sin necesidad de numero dedicado. Se alinea con la
-                filosofia abierta y democratica del proyecto.
+                {t('comparison.telegramAnswer')}
               </p>
             </div>
           </div>
