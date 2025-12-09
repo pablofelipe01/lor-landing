@@ -376,6 +376,7 @@ const translations = {
     'faq.contactUs': 'Contactenos para mas informacion',
 
     // Footer
+    'footer.documentation': 'Documentacion Tecnica',
     'footer.ctaTitle': 'Listo para Transformar la Conectividad Rural?',
     'footer.ctaSubtitle': 'Unase a nosotros en este proyecto que protege ninos, democratiza la educacion e impulsa la productividad de 180 millones de personas.',
     'footer.brandDesc': 'Sistema de bajo costo que lleva seguridad, educacion e IA a zonas rurales sin cobertura movil mediante redes mesh LoRa.',
@@ -751,6 +752,7 @@ const translations = {
     'faq.contactUs': 'Contact us for more information',
 
     // Footer
+    'footer.documentation': 'Technical Documentation',
     'footer.ctaTitle': 'Ready to Transform Rural Connectivity?',
     'footer.ctaSubtitle': 'Join us in this project that protects children, democratizes education and boosts the productivity of 180 million people.',
     'footer.brandDesc': 'Low-cost system that brings safety, education and AI to rural areas without mobile coverage through LoRa mesh networks.',
