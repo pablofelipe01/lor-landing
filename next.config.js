@@ -8,6 +8,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion'],
   },
+  trailingSlash: true,
 }
 
 module.exports = nextConfig

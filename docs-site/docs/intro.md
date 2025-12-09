@@ -3,74 +3,46 @@ sidebar_position: 1
 slug: /
 ---
 
-# Introducción
+# Introduction
 
-Bienvenido a la documentación técnica de la **Red Mesh LoRa + Claude AI** para conectividad rural.
+Welcome to the technical documentation for the **LoRa Mesh Network + Claude AI** for rural connectivity.
 
-## ¿Qué es este proyecto?
+## What is this project?
 
-Este proyecto implementa una red de comunicación mesh basada en tecnología LoRa (Long Range) integrada con inteligencia artificial (Claude AI) para proporcionar conectividad en zonas rurales sin cobertura móvil tradicional.
+This project implements a mesh communication network based on LoRa (Long Range) technology integrated with artificial intelligence (Claude AI) to provide connectivity in rural areas without traditional mobile coverage.
 
-## Arquitectura General
+## General Architecture
 
-El sistema consta de:
+The system consists of:
 
-1. **Gateway Principal**: Raspberry Pi 5 con módulo LoRa
-2. **Mission Pack**: reComputer R1025-10 con Node-RED y Claude AI
-3. **Dispositivos de Campo**: Trackers T1000-E y módulos ESP32
-4. **Conectividad**: Starlink para acceso a internet
+1. **Raspberry Pi 5 Gateway** - Central node that connects the mesh network to the internet
+2. **reComputer R1025-10** - Access point and Node-RED server for Claude AI integration
+3. **T1000-E Trackers** - Portable devices for end users
+4. **LoRa Modules** - For long-range communication
+
+## How does it work?
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    RED EXTERNA (Starlink)                   │
-│                      192.168.68.x                           │
-└─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-┌───────────────┐    ┌───────────────┐    ┌───────────────┐
-│ Raspberry Pi 5│    │  reComputer   │    │    Otros      │
-│ 192.168.68.127│    │R1025-10       │    │  Dispositivos │
-│               │    │192.168.68.130 │    │               │
-│  Meshtastic   │    │192.168.100.10 │    │               │
-│  Gateway      │    │               │    │               │
-└───────────────┘    │  Node-RED +   │    └───────────────┘
-        │            │  Claude AI    │
-        │            └───────────────┘
-        │                     │
-        ▼                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    RED MESH LoRa                            │
-│                    915 MHz (US)                             │
-│                                                             │
-│   ┌─────────┐    ┌─────────┐    ┌─────────┐               │
-│   │T1000-E  │    │T1000-E  │    │T1000-E  │               │
-│   │Tracker 1│◄──►│Tracker 2│◄──►│Tracker 3│               │
-│   └─────────┘    └─────────┘    └─────────┘               │
-└─────────────────────────────────────────────────────────────┘
+[User with T1000-E] → [LoRa Mesh] → [Gateway RPi5] → [MQTT] → [reComputer] → [Claude API]
+                                                                    ↓
+[User with T1000-E] ← [LoRa Mesh] ← [Gateway RPi5] ← [MQTT] ← [Response]
 ```
 
-## Componentes Principales
+1. User sends message with `@claude` from their tracker
+2. Message travels through mesh network to gateway
+3. Gateway publishes to MQTT
+4. Node-RED processes and sends to Claude API
+5. Response returns through the same path
 
-| Componente | Función | IP/Identificador |
-|------------|---------|------------------|
-| Raspberry Pi 5 | Gateway Meshtastic principal | 192.168.68.127 |
-| reComputer R1025-10 | Servidor Node-RED + Claude AI | 192.168.68.130 / 192.168.100.10 |
-| T1000-E Trackers | Dispositivos de campo | Varios nodos mesh |
-| Starlink | Conexión a internet | 192.168.68.x (DHCP) |
+## Key Features
 
-## Flujo de Comunicación
+- **No cellular coverage required** - Works with LoRa radio
+- **Mesh network** - Messages hop between nodes
+- **AI Integration** - Claude answers questions
+- **Range up to 10km** - Between nodes with line of sight
 
-1. **Usuario envía mensaje** desde tracker T1000-E
-2. **Mensaje viaja** por la red mesh LoRa
-3. **Raspberry Pi 5** recibe y publica en MQTT
-4. **Node-RED** procesa el mensaje
-5. Si contiene `@claude`, **Claude AI responde**
-6. **Respuesta viaja** de vuelta por la red mesh
+## Quick Start
 
-## Próximos Pasos
-
-- [Configurar Hardware](/hardware/raspberry-pi)
-- [Configurar Meshtastic](/configuracion/meshtastic)
-- [Integrar Claude AI](/claude/node-red)
+1. [Configure your tracker](/guides/send-message)
+2. [Send a message to Claude](/guides/send-message#send-to-claude)
+3. [Monitor the network](/guides/monitoring)

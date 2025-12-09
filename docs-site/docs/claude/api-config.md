@@ -2,291 +2,195 @@
 sidebar_position: 3
 ---
 
-# Configuración API Claude
+# Claude API Configuration
 
-Guía para configurar y usar la API de Claude AI en el sistema.
+Setup and configuration of the Claude API integration.
 
-## Información de la API
+## API Overview
 
-| Parámetro | Valor |
-|-----------|-------|
-| Endpoint | https://api.anthropic.com/v1/messages |
-| Modelo | claude-sonnet-4-20250514 |
-| Versión API | 2023-06-01 |
+We use the Claude Messages API to process user questions.
 
-## Obtener API Key
+**Endpoint**: `https://api.anthropic.com/v1/messages`
 
-1. Ir a [console.anthropic.com](https://console.anthropic.com)
-2. Crear cuenta o iniciar sesión
-3. Ir a "API Keys"
-4. Crear nueva key
-5. Copiar y guardar de forma segura
+## Authentication
 
-:::warning Seguridad
-Nunca compartas tu API key. Nunca la incluyas en código público.
-:::
+### API Key
+The API key is stored as an environment variable in Node-RED.
 
-## Configuración en Node-RED
+Format: `sk-ant-api03-xxxxx...`
 
-### Headers Requeridos
-
-```javascript
-msg.headers = {
-    "x-api-key": "sk-ant-api03-TU_API_KEY_AQUI",
-    "anthropic-version": "2023-06-01",
-    "content-type": "application/json"
-};
+### Headers Required
+```
+x-api-key: <your-api-key>
+anthropic-version: 2023-06-01
+content-type: application/json
 ```
 
-### Body del Request
+## Request Format
 
-```javascript
-msg.payload = {
-    "model": "claude-sonnet-4-20250514",
-    "max_tokens": 300,
-    "messages": [
-        {
-            "role": "user",
-            "content": "Tu pregunta aquí"
-        }
-    ],
-    "system": "Instrucciones del sistema"
-};
-```
-
-## Parámetros del Request
-
-### model
-
-Modelo de Claude a usar:
-
-| Modelo | Descripción | Uso |
-|--------|-------------|-----|
-| claude-sonnet-4-20250514 | Sonnet 4 | **Recomendado** |
-| claude-3-haiku-20240307 | Haiku 3 | Más rápido, menor costo |
-| claude-3-opus-20240229 | Opus 3 | Más capaz, mayor costo |
-
-### max_tokens
-
-Máximo de tokens en la respuesta:
-- **Recomendado**: 300 (suficiente para respuestas cortas)
-- **Mínimo**: 100
-- **Máximo**: Depende del modelo
-
-### system
-
-Instrucciones del sistema que definen el comportamiento:
-
-```javascript
-"system": "Eres un asistente para comunidades rurales de Latinoamérica.
-Responde de forma breve, práctica y en español.
-Máximo 200 caracteres por limitaciones de la red LoRa.
-Enfócate en agricultura, clima, salud básica y educación."
-```
-
-### messages
-
-Array de mensajes de la conversación:
-
-```javascript
-"messages": [
-    {
-        "role": "user",
-        "content": "¿Cuándo debo regar mis tomates?"
-    }
-]
-```
-
-## Ejemplo Completo de Request
-
-```javascript
-// En nodo Function de Node-RED
-
-// Preparar el request
-msg.payload = {
-    "model": "claude-sonnet-4-20250514",
-    "max_tokens": 300,
-    "messages": [
-        {
-            "role": "user",
-            "content": msg.payload  // Pregunta del usuario
-        }
-    ],
-    "system": "Eres un asistente para comunidades rurales. Responde brevemente en español. Máximo 200 caracteres."
-};
-
-// Headers
-msg.headers = {
-    "x-api-key": "sk-ant-api03-xxxxx",  // TU API KEY
-    "anthropic-version": "2023-06-01",
-    "content-type": "application/json"
-};
-
-return msg;
-```
-
-## Respuesta de la API
-
-### Estructura de Respuesta Exitosa
-
+### Basic Request
 ```json
 {
-  "id": "msg_01234567890",
+  "model": "claude-sonnet-4-20250514",
+  "max_tokens": 150,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Your question here"
+    }
+  ]
+}
+```
+
+### With System Prompt
+```json
+{
+  "model": "claude-sonnet-4-20250514",
+  "max_tokens": 150,
+  "system": "You are a helpful assistant for a rural community. Give brief, clear answers. Maximum 2-3 sentences.",
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is LoRa?"
+    }
+  ]
+}
+```
+
+## Response Format
+
+### Successful Response
+```json
+{
+  "id": "msg_01XFDUDYJgAACzvnptvVoYEL",
   "type": "message",
   "role": "assistant",
   "content": [
     {
       "type": "text",
-      "text": "Riega tus tomates temprano en la mañana, 2-3 veces por semana. Evita mojar las hojas."
+      "text": "LoRa (Long Range) is a wireless technology that enables long-distance communication with low power consumption, ideal for IoT devices."
     }
   ],
   "model": "claude-sonnet-4-20250514",
   "stop_reason": "end_turn",
   "usage": {
-    "input_tokens": 25,
-    "output_tokens": 32
+    "input_tokens": 10,
+    "output_tokens": 35
   }
 }
 ```
 
-### Extraer la Respuesta
+## Configuration Parameters
 
-```javascript
-// En nodo Function después del HTTP Request
+### Model Selection
+| Model | Speed | Quality | Cost |
+|-------|-------|---------|------|
+| claude-sonnet-4-20250514 | Fast | Good | Low |
+| claude-opus-4-20250514 | Slow | Best | High |
 
-var response = msg.payload.content[0].text;
-return msg;
+We use `claude-sonnet-4-20250514` for speed and cost efficiency.
+
+### Token Limits
+- `max_tokens`: 150 (keeps responses short for LoRa)
+- LoRa message limit: ~230 bytes
+- We truncate responses over 200 characters
+
+### System Prompt
+```
+You are a helpful assistant for a rural community.
+Give brief, clear answers. Maximum 2-3 sentences.
+Respond in the same language as the question.
 ```
 
-## Manejo de Errores
+## Error Handling
 
-### Errores Comunes
+### Common Errors
 
-| Código | Causa | Solución |
-|--------|-------|----------|
-| 401 | API key inválida | Verificar key |
-| 429 | Rate limit | Esperar y reintentar |
-| 500 | Error del servidor | Reintentar |
-| 529 | API sobrecargada | Esperar |
-
-### Nodo de Manejo de Errores
-
-```javascript
-// Después del HTTP Request
-
-if (msg.statusCode !== 200) {
-    // Error en la API
-    node.error("Error de API: " + msg.statusCode);
-    msg.payload = {
-        "text": "Error al consultar. Intenta de nuevo."
-    };
-    return msg;
+#### 401 Unauthorized
+```json
+{
+  "error": {
+    "type": "authentication_error",
+    "message": "invalid x-api-key"
+  }
 }
-
-// Procesar respuesta exitosa
-var response = msg.payload.content[0].text;
-msg.payload = { "text": response };
-return msg;
 ```
+**Solution**: Verify API key is correct.
 
-## Optimización de Costos
+#### 429 Rate Limited
+```json
+{
+  "error": {
+    "type": "rate_limit_error",
+    "message": "Rate limit exceeded"
+  }
+}
+```
+**Solution**: Wait and implement rate limiting.
 
-### Reducir Tokens
+#### 500 Server Error
+```json
+{
+  "error": {
+    "type": "api_error",
+    "message": "Internal server error"
+  }
+}
+```
+**Solution**: Retry after a few seconds.
 
-1. **System prompt corto**: Menos tokens = menor costo
-2. **Limitar max_tokens**: 300 es suficiente
-3. **Modelo económico**: Usar Haiku para consultas simples
+## Rate Limiting
 
-### Filtrar Mensajes
-
-No enviar todo a Claude:
-- Solo mensajes con `@claude`
-- Ignorar duplicados
-- Implementar cooldown entre consultas
+To avoid hitting rate limits, implement delays between requests:
 
 ```javascript
-// Cooldown de 10 segundos entre consultas del mismo usuario
-var lastQuery = flow.get("lastQuery_" + msg.sender) || 0;
+// In Node-RED function node
+var lastCall = flow.get("lastClaudeCall") || 0;
 var now = Date.now();
 
-if (now - lastQuery < 10000) {
-    return null; // Ignorar
+if (now - lastCall < 5000) { // 5 second minimum
+    return null; // Skip this request
 }
 
-flow.set("lastQuery_" + msg.sender, now);
+flow.set("lastClaudeCall", now);
 return msg;
 ```
 
-## Personalización del Asistente
+## Testing the API
 
-### Para Agricultura
-
-```javascript
-"system": "Eres un agrónomo virtual para pequeños agricultores.
-Conoces cultivos tropicales: maíz, frijol, café, plátano.
-Responde en español simple, máximo 200 caracteres.
-Da consejos prácticos sobre siembra, riego, plagas y cosecha."
+### Using curl
+```bash
+curl -X POST https://api.anthropic.com/v1/messages \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-20250514",
+    "max_tokens": 100,
+    "messages": [
+      {"role": "user", "content": "Say hello"}
+    ]
+  }'
 ```
 
-### Para Educación
+### Using Node-RED
+1. Add Inject node
+2. Add Function node with test payload
+3. Add HTTP Request node
+4. Add Debug node
+5. Deploy and click inject
 
-```javascript
-"system": "Eres un tutor educativo para estudiantes rurales.
-Explicas matemáticas, ciencias y español de forma simple.
-Responde en español, máximo 200 caracteres.
-Usa ejemplos cotidianos de la vida rural."
-```
+## Costs
 
-### Para Salud
+API calls are billed based on tokens:
+- Input tokens: Question length
+- Output tokens: Response length
 
-```javascript
-"system": "Eres un asistente de salud básica.
-Das información general sobre primeros auxilios y prevención.
-Siempre recomiendas consultar médico para casos serios.
-Responde en español, máximo 200 caracteres."
-```
+With our configuration (~150 tokens max), costs are minimal per query.
 
-## Monitoreo de Uso
+## Security Notes
 
-### En Anthropic Console
-
-1. Ir a console.anthropic.com
-2. Ver "Usage" para estadísticas
-3. Configurar alertas de gasto
-
-### Logging en Node-RED
-
-```javascript
-// Agregar después de cada consulta exitosa
-var usage = msg.payload.usage;
-node.warn("Tokens usados - Input: " + usage.input_tokens +
-          ", Output: " + usage.output_tokens);
-```
-
-## Seguridad de la API Key
-
-### Almacenamiento Seguro
-
-1. **No hardcodear** en el flujo visible
-2. Usar **environment variables** de Node-RED
-3. O usar **credentials** de Node-RED
-
-### Usar Environment Variables
-
-En Node-RED settings.js:
-```javascript
-process.env.CLAUDE_API_KEY = "sk-ant-api03-xxxxx";
-```
-
-En el flujo:
-```javascript
-var apiKey = env.get("CLAUDE_API_KEY");
-msg.headers["x-api-key"] = apiKey;
-```
-
-### Rotación de Keys
-
-1. Crear nueva key en console
-2. Actualizar en Node-RED
-3. Verificar funcionamiento
-4. Eliminar key antigua
+- Never expose API key in client-side code
+- Store key in environment variables
+- Rotate keys periodically
+- Monitor usage for anomalies

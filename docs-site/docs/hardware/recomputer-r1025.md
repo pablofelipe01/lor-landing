@@ -2,302 +2,114 @@
 sidebar_position: 2
 ---
 
-# reComputer R1025-10 - Mission Pack
+# reComputer R1025-10
 
-El reComputer R1025-10 es el cerebro del sistema, ejecutando Node-RED y la integración con Claude AI.
+The reComputer R1025-10 serves as the AI integration point and internal WiFi access point.
 
-## Especificaciones
+## Specifications
 
-| Característica | Valor |
-|----------------|-------|
-| Modelo | Seeed Studio reComputer R1025-10 |
-| IP Red Externa | 192.168.68.130 |
-| IP Red Interna | 192.168.100.10 |
-| WiFi AP | 192.168.100.1 |
-| Función | Servidor Node-RED + Claude AI |
+| Component | Details |
+|-----------|---------|
+| Model | Seeed Studio reComputer R1025-10 |
+| CPU | ARM Cortex |
+| RAM | 4GB |
+| Storage | 32GB eMMC |
+| Network | Dual Ethernet + WiFi |
 
-## Rol en el Sistema
+## Network Configuration
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                reComputer R1025-10                          │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                   Node-RED                           │   │
-│  │                   :1880                              │   │
-│  │                                                      │   │
-│  │  ┌─────────┐   ┌─────────┐   ┌─────────┐           │   │
-│  │  │  MQTT   │──►│ Detect  │──►│ Claude  │           │   │
-│  │  │  Input  │   │ @claude │   │   API   │           │   │
-│  │  └─────────┘   └─────────┘   └─────────┘           │   │
-│  │       │                            │                │   │
-│  │       │                            │                │   │
-│  │       └────────────────────────────┘                │   │
-│  │                    │                                 │   │
-│  │             ┌──────▼──────┐                         │   │
-│  │             │    MQTT     │                         │   │
-│  │             │   Output    │                         │   │
-│  │             └─────────────┘                         │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  ┌───────────────┐              ┌───────────────┐          │
-│  │   Ethernet    │              │   WiFi AP     │          │
-│  │ 192.168.68.130│              │192.168.100.1  │          │
-│  │ 192.168.100.10│              │               │          │
-│  └───────────────┘              └───────────────┘          │
-└─────────────────────────────────────────────────────────────┘
+| Interface | IP | Function |
+|-----------|-----|---------|
+| eth0 | 192.168.68.130 | External (to Starlink) |
+| eth1/wlan0 | 192.168.100.10 | Internal (WiFi AP) |
+
+## Functions
+
+1. **Node-RED Server** - Processes messages and integrates with Claude
+2. **WiFi Access Point** - Provides internal network connectivity
+3. **NAT Router** - Routes traffic between internal and external networks
+
+## Installed Services
+
+### Node-RED
+```bash
+# Check status
+sudo systemctl status nodered
+
+# View logs
+journalctl -u nodered -f
+
+# Restart
+sudo systemctl restart nodered
+
+# Access
+http://192.168.100.10:1880
 ```
 
-## Interfaces de Red
+### hostapd (WiFi AP)
+```bash
+# Check status
+sudo systemctl status hostapd
 
-### Ethernet (eth0)
+# Restart
+sudo systemctl restart hostapd
+```
 
-El reComputer tiene dos IPs en la interfaz ethernet:
+### dnsmasq (DHCP/DNS)
+```bash
+# Check status
+sudo systemctl status dnsmasq
 
-- **192.168.68.130**: Red externa (Starlink)
-- **192.168.100.10**: Red interna
+# View assigned leases
+cat /var/lib/misc/dnsmasq.leases
+```
 
-### WiFi Access Point
+## Access
 
-El reComputer crea un punto de acceso WiFi:
-
-| Parámetro | Valor |
-|-----------|-------|
-| SSID | `MPR114993468244600004-2.4G` |
-| Password | `missionconnected` |
-| IP Gateway | 192.168.100.1 |
-| DHCP Range | 192.168.100.100 - 192.168.100.200 |
-
-## Acceso
-
-### SSH (Red Externa)
-
+### SSH (from external network)
 ```bash
 ssh recomputer@192.168.68.130
 ```
 
-### SSH (Red Interna)
-
+### SSH (from internal network)
 ```bash
 ssh recomputer@192.168.100.10
 ```
 
 ### Node-RED
-
-Abrir en navegador:
 ```
 http://192.168.100.10:1880
 ```
 
-o desde red externa:
-```
-http://192.168.68.130:1880
-```
+## WiFi Configuration
 
-## Servicios Activos
+### Access Point Details
+| Parameter | Value |
+|-----------|-------|
+| SSID | `MPR114993468244600004-2.4G` |
+| Password | `missionconnected` |
+| Channel | Auto |
+| Band | 2.4 GHz |
 
-### Node-RED
-
+### Check connected clients
 ```bash
-# Ver estado
-sudo systemctl status nodered
-
-# Reiniciar
-sudo systemctl restart nodered
-
-# Ver logs
-journalctl -u nodered -f
-```
-
-### WiFi AP (hostapd)
-
-```bash
-# Ver estado
-sudo systemctl status hostapd
-
-# Reiniciar
-sudo systemctl restart hostapd
-```
-
-### DHCP Server (dnsmasq)
-
-```bash
-# Ver estado
-sudo systemctl status dnsmasq
-
-# Ver clientes conectados
 cat /var/lib/misc/dnsmasq.leases
 ```
 
-## Configuración de Red
+## Maintenance
 
-### Interfaz Ethernet
-
+### Check internet connectivity
 ```bash
-# /etc/network/interfaces o netplan
-
-# Red externa
-auto eth0
-iface eth0 inet static
-    address 192.168.68.130
-    netmask 255.255.255.0
-    gateway 192.168.68.1
-
-# Red interna (alias)
-auto eth0:1
-iface eth0:1 inet static
-    address 192.168.100.10
-    netmask 255.255.255.0
-```
-
-### Access Point WiFi
-
-```bash
-# /etc/hostapd/hostapd.conf
-interface=wlan0
-driver=nl80211
-ssid=MPR114993468244600004-2.4G
-hw_mode=g
-channel=7
-wmm_enabled=0
-macaddr_acl=0
-auth_algs=1
-ignore_broadcast_ssid=0
-wpa=2
-wpa_passphrase=missionconnected
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP
-rsn_pairwise=CCMP
-```
-
-## Node-RED
-
-### Ubicación de Flujos
-
-```bash
-# Directorio de Node-RED
-~/.node-red/
-
-# Archivo de flujos
-~/.node-red/flows.json
-
-# Configuración
-~/.node-red/settings.js
-```
-
-### Nodos Instalados
-
-- node-red-contrib-mqtt
-- (otros nodos según necesidad)
-
-### Backup de Flujos
-
-```bash
-# Exportar flujos
-cp ~/.node-red/flows.json ~/flows-backup-$(date +%Y%m%d).json
-
-# Restaurar flujos
-cp ~/flows-backup.json ~/.node-red/flows.json
-sudo systemctl restart nodered
-```
-
-## Comandos Útiles
-
-### Ver Dispositivos Conectados al WiFi
-
-```bash
-# Via hostapd
-hostapd_cli list_sta
-
-# Via ARP
-arp -a | grep 192.168.100
-
-# Via dnsmasq leases
-cat /var/lib/misc/dnsmasq.leases
-```
-
-### Monitorear Tráfico
-
-```bash
-# Instalar iftop si no está
-sudo apt install iftop
-
-# Ver tráfico en tiempo real
-sudo iftop -i eth0
-```
-
-### Verificar Conectividad
-
-```bash
-# Ping a Raspberry Pi
-ping 192.168.68.127
-
-# Ping a internet
 ping 8.8.8.8
-
-# Verificar MQTT
-mosquitto_sub -h 192.168.68.127 -t "meshtastic/#" -v
+ping api.anthropic.com
 ```
 
-## Troubleshooting
-
-### Node-RED no responde
-
+### Check routes
 ```bash
-# Verificar proceso
-ps aux | grep node-red
-
-# Reiniciar servicio
-sudo systemctl restart nodered
-
-# Ver logs de error
-journalctl -u nodered -n 50
-```
-
-### WiFi AP no funciona
-
-```bash
-# Verificar hostapd
-sudo systemctl status hostapd
-
-# Ver logs
-journalctl -u hostapd -n 50
-
-# Reiniciar servicios
-sudo systemctl restart hostapd dnsmasq
-```
-
-### Sin conectividad a internet
-
-```bash
-# Verificar gateway
 ip route
-
-# Verificar DNS
-nslookup google.com
-
-# Verificar firewall
-sudo iptables -L
 ```
 
-## Mantenimiento
-
-### Actualizar Sistema
-
+### Check NAT rules
 ```bash
-sudo apt update
-sudo apt upgrade -y
-```
-
-### Actualizar Node-RED
-
-```bash
-sudo npm install -g --unsafe-perm node-red
-sudo systemctl restart nodered
-```
-
-### Limpiar Logs
-
-```bash
-sudo journalctl --vacuum-time=7d
+sudo iptables -t nat -L
 ```

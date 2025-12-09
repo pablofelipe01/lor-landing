@@ -1,79 +1,22 @@
-/**
- * Custom CSS for Red Mesh LoRa + Claude AI Documentation
- */
-
 :root {
-  --ifm-color-primary: #2E75B6;
-  --ifm-color-primary-dark: #2968a3;
-  --ifm-color-primary-darker: #27629a;
-  --ifm-color-primary-darkest: #20517f;
-  --ifm-color-primary-light: #3382c9;
-  --ifm-color-primary-lighter: #3b89cf;
-  --ifm-color-primary-lightest: #56a0dc;
+  --ifm-color-primary: #2e8555;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #4d9de0;
-  --ifm-color-primary-dark: #319bd9;
-  --ifm-color-primary-darker: #238fc9;
-  --ifm-color-primary-darkest: #1d77a5;
-  --ifm-color-primary-light: #6babe6;
-  --ifm-color-primary-lighter: #7fb5ea;
-  --ifm-color-primary-lightest: #a8cef1;
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-}
-
-/* Custom styles */
-.hero {
-  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, #1a4d7c 100%);
-}
-
-.alert--warning {
-  background-color: #fff3cd;
-  border-color: #ffc107;
-}
-
-.alert--danger {
-  background-color: #f8d7da;
-  border-color: #dc3545;
-}
-
-/* Network diagram styles */
-.network-diagram {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
-  font-family: monospace;
-  overflow-x: auto;
-}
-
-/* Credential boxes */
-.credential-box {
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 1rem;
-  margin: 1rem 0;
-}
-
-.credential-box code {
-  background: transparent;
-  padding: 0;
-}
-
-/* Table improvements */
-table {
-  display: table;
-  width: 100%;
-}
-
-table th {
-  background-color: var(--ifm-color-primary);
-  color: white;
-}
-
-[data-theme='dark'] table th {
-  background-color: var(--ifm-color-primary-dark);
 }

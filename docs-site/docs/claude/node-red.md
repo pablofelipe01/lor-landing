@@ -2,125 +2,97 @@
 sidebar_position: 1
 ---
 
-# Node-RED con Claude AI
+# Node-RED Configuration
 
-Node-RED es la plataforma que conecta los mensajes de Meshtastic con la API de Claude AI.
+Node-RED flow for Claude AI integration.
 
-## Arquitectura del Flujo
+## Access Node-RED
+
+- **URL**: http://192.168.100.10:1880
+- **Username**: admin
+- **Password**: [ask administrator]
+
+## Flow Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                           NODE-RED                                      │
-│                                                                         │
-│  ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐  │
-│  │  MQTT   │   │  JSON   │   │ Detect  │   │ Claude  │   │  MQTT   │  │
-│  │   In    │──►│ Parse   │──►│ @claude │──►│   API   │──►│   Out   │  │
-│  │         │   │         │   │         │   │         │   │         │  │
-│  └─────────┘   └─────────┘   └─────────┘   └─────────┘   └─────────┘  │
-│       │                           │                            │        │
-│       │                           │ No @claude                 │        │
-│       │                           ▼                            │        │
-│       │                      [Ignorar]                         │        │
-│       │                                                        │        │
-└───────┼────────────────────────────────────────────────────────┼────────┘
-        │                                                        │
-        │ MQTT                                                   │ MQTT
-        ▼                                                        ▼
-   Meshtastic                                               Meshtastic
-   (Entrada)                                                 (Salida)
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐
+│  MQTT In    │───►│ Detect       │───►│ Claude API  │
+│  (receive)  │    │ @claude      │    │ Request     │
+└─────────────┘    └──────────────┘    └──────┬──────┘
+                                              │
+┌─────────────┐    ┌──────────────┐    ┌──────▼──────┐
+│  MQTT Out   │◄───│ Format       │◄───│ Process     │
+│  (send)     │    │ Response     │    │ Response    │
+└─────────────┘    └──────────────┘    └─────────────┘
 ```
 
-## Acceso a Node-RED
+## Nodes Configuration
 
-| Red | URL |
-|-----|-----|
-| Externa | http://192.168.68.130:1880 |
-| Interna | http://192.168.100.10:1880 |
+### 1. MQTT In Node
+Receives messages from the mesh network.
 
-## Flujo de 4 Nodos
+**Settings**:
+- Server: 192.168.68.127:1883
+- Topic: `meshtastic/2/json/LongFast/!69d01ebc`
+- QoS: 0
+- Output: auto-detect
 
-El flujo consta de 4 nodos principales:
+### 2. Detect @claude (Function Node)
+Filters messages containing "@claude".
 
-### 1. MQTT In - Recibir Mensajes
-
-**Tipo**: mqtt in
-
-**Configuración**:
-| Parámetro | Valor |
-|-----------|-------|
-| Server | 192.168.68.127:1883 |
-| Topic | `meshtastic/2/json/LongFast/!69d01ebc` |
-| QoS | 0 |
-| Output | auto-detect (parsed JSON) |
-
-### 2. Function - Detectar @claude
-
-**Tipo**: function
-
-**Nombre**: Detect @claude
-
-**Código**:
 ```javascript
-// Verificar que es un mensaje de texto
-if (!msg.payload || !msg.payload.payload || !msg.payload.payload.text) {
-    return null;
+var payload = msg.payload;
+
+// Parse if string
+if (typeof payload === 'string') {
+    try {
+        payload = JSON.parse(payload);
+    } catch (e) {
+        return null;
+    }
 }
 
-var text = msg.payload.payload.text;
-
-// Verificar si contiene @claude
-if (text.toLowerCase().indexOf("@claude") === -1) {
-    return null;
+// Check for text message with @claude
+if (payload.payload && payload.payload.text) {
+    var text = payload.payload.text;
+    if (text.toLowerCase().includes('@claude')) {
+        msg.originalSender = payload.sender;
+        msg.question = text.replace(/@claude/gi, '').trim();
+        return msg;
+    }
 }
-
-// Extraer el mensaje sin @claude
-var question = text.replace(/@claude/gi, "").trim();
-
-// Guardar información del remitente
-msg.sender = msg.payload.sender;
-msg.from = msg.payload.from;
-msg.originalText = text;
-
-// Preparar el mensaje para Claude
-msg.payload = question;
-
-return msg;
+return null;
 ```
 
-### 3. HTTP Request - Claude API
+### 3. Claude API Request (HTTP Request Node)
+Sends request to Claude API.
 
-**Tipo**: http request
+**Settings**:
+- Method: POST
+- URL: `https://api.anthropic.com/v1/messages`
+- Headers:
+  - `x-api-key`: [API KEY]
+  - `anthropic-version`: 2023-06-01
+  - `content-type`: application/json
 
-**Configuración**:
-| Parámetro | Valor |
-|-----------|-------|
-| Method | POST |
-| URL | https://api.anthropic.com/v1/messages |
-| Return | a parsed JSON object |
+### 4. Prepare Request (Function Node)
+Formats the request body for Claude.
 
-**Headers** (configurar en nodo):
-```
-x-api-key: sk-ant-api03-xxxxx (tu API key)
-anthropic-version: 2023-06-01
-content-type: application/json
-```
-
-**Nodo Function previo para preparar body**:
 ```javascript
 msg.payload = {
     "model": "claude-sonnet-4-20250514",
-    "max_tokens": 300,
+    "max_tokens": 150,
+    "system": "You are a helpful assistant for a rural community. Give brief, clear answers. Maximum 2-3 sentences. Respond in the same language as the question.",
     "messages": [
         {
             "role": "user",
-            "content": msg.payload
+            "content": msg.question
         }
-    ],
-    "system": "Eres un asistente para comunidades rurales. Responde de forma breve y práctica. Máximo 200 caracteres por limitaciones de LoRa."
+    ]
 };
 
 msg.headers = {
-    "x-api-key": "sk-ant-api03-xxxxx",
+    "x-api-key": env.get("CLAUDE_API_KEY"),
     "anthropic-version": "2023-06-01",
     "content-type": "application/json"
 };
@@ -128,170 +100,60 @@ msg.headers = {
 return msg;
 ```
 
-### 4. MQTT Out - Enviar Respuesta
+### 5. Process Response (Function Node)
+Extracts Claude's response.
 
-**Tipo**: mqtt out
-
-**Configuración**:
-| Parámetro | Valor |
-|-----------|-------|
-| Server | 192.168.68.127:1883 |
-| Topic | (configurar dinámicamente) |
-| QoS | 0 |
-| Retain | false |
-
-**Nodo Function previo para formatear respuesta**:
 ```javascript
-// Extraer respuesta de Claude
-var response = msg.payload.content[0].text;
+if (msg.payload && msg.payload.content && msg.payload.content[0]) {
+    msg.response = msg.payload.content[0].text;
+    return msg;
+}
+return null;
+```
 
-// Truncar si es muy largo (límite LoRa)
+### 6. Format for MQTT (Function Node)
+Prepares message for mesh network.
+
+```javascript
+// Truncate if too long (LoRa limit ~230 bytes)
+var response = msg.response;
 if (response.length > 200) {
     response = response.substring(0, 197) + "...";
 }
 
-// Formatear para Meshtastic
-msg.payload = {
-    "text": response
-};
+msg.payload = response;
+msg.topic = "meshtastic/2/json/LongFast/!69d01ebc/sendtext";
 
 return msg;
 ```
 
-## Flujo Completo (JSON para Importar)
+### 7. MQTT Out Node
+Sends response back to mesh.
 
-```json
-[
-    {
-        "id": "mqtt-in-meshtastic",
-        "type": "mqtt in",
-        "name": "Meshtastic Messages",
-        "topic": "meshtastic/2/json/LongFast/!69d01ebc",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "mqtt-broker",
-        "wires": [["detect-claude"]]
-    },
-    {
-        "id": "detect-claude",
-        "type": "function",
-        "name": "Detect @claude",
-        "func": "if (!msg.payload || !msg.payload.payload || !msg.payload.payload.text) { return null; }\nvar text = msg.payload.payload.text;\nif (text.toLowerCase().indexOf('@claude') === -1) { return null; }\nvar question = text.replace(/@claude/gi, '').trim();\nmsg.sender = msg.payload.sender;\nmsg.originalText = text;\nmsg.payload = question;\nreturn msg;",
-        "wires": [["prepare-claude"]]
-    },
-    {
-        "id": "prepare-claude",
-        "type": "function",
-        "name": "Prepare Claude Request",
-        "func": "msg.payload = {\n    'model': 'claude-sonnet-4-20250514',\n    'max_tokens': 300,\n    'messages': [{'role': 'user', 'content': msg.payload}],\n    'system': 'Eres un asistente para comunidades rurales. Responde de forma breve y práctica.'\n};\nmsg.headers = {\n    'x-api-key': 'TU_API_KEY_AQUI',\n    'anthropic-version': '2023-06-01',\n    'content-type': 'application/json'\n};\nreturn msg;",
-        "wires": [["claude-api"]]
-    },
-    {
-        "id": "claude-api",
-        "type": "http request",
-        "name": "Claude API",
-        "method": "POST",
-        "url": "https://api.anthropic.com/v1/messages",
-        "ret": "obj",
-        "wires": [["format-response"]]
-    },
-    {
-        "id": "format-response",
-        "type": "function",
-        "name": "Format Response",
-        "func": "var response = msg.payload.content[0].text;\nif (response.length > 200) { response = response.substring(0, 197) + '...'; }\nmsg.payload = { 'text': response };\nreturn msg;",
-        "wires": [["mqtt-out"]]
-    },
-    {
-        "id": "mqtt-out",
-        "type": "mqtt out",
-        "name": "Send to Meshtastic",
-        "topic": "",
-        "broker": "mqtt-broker"
-    }
-]
-```
+**Settings**:
+- Server: 192.168.68.127:1883
+- Topic: (set by previous function node)
+- QoS: 0
+- Retain: false
 
-## Importar el Flujo
+## Environment Variables
 
-1. Abrir Node-RED (http://192.168.100.10:1880)
-2. Menú hamburguesa → Import
-3. Pegar el JSON del flujo
-4. Click "Import"
-5. Configurar el nodo MQTT broker
-6. Agregar tu API key de Claude
-7. Deploy
+Set in Node-RED settings:
+- `CLAUDE_API_KEY`: Your Anthropic API key
 
-## Probar el Flujo
+## Import Flow
 
-### Prueba Manual vía MQTT
+To import the complete flow:
+1. Open Node-RED
+2. Menu → Import
+3. Paste the flow JSON
+4. Click Import
+5. Deploy
 
-```bash
-# Publicar mensaje de prueba
-mosquitto_pub -h 192.168.68.127 -t "meshtastic/2/json/LongFast/!69d01ebc" -m '{
-  "payload": {
-    "text": "@claude ¿Cuándo debo sembrar tomates?"
-  },
-  "sender": "!test1234",
-  "from": 1234567890
-}'
-```
+## Debugging
 
-### Ver Respuesta
-
-```bash
-# Suscribirse a respuestas
-mosquitto_sub -h 192.168.68.127 -t "meshtastic/#" -v
-```
-
-## Configuración del Broker MQTT
-
-En Node-RED, configurar el nodo MQTT broker:
-
-1. Doble click en nodo MQTT
-2. Click en lápiz junto a "Server"
-3. Configurar:
-   - **Name**: Meshtastic MQTT
-   - **Server**: 192.168.68.127
-   - **Port**: 1883
-4. Guardar
-
-## Debug
-
-### Agregar Nodos Debug
-
-Para ver el flujo de datos:
-
-1. Agregar nodo "debug" después de cada nodo
-2. Configurar para mostrar "complete msg object"
-3. Ver panel de debug a la derecha
-4. Deploy y probar
-
-### Ver Logs de Node-RED
-
-```bash
-# En el reComputer
-journalctl -u nodered -f
-```
-
-## Troubleshooting
-
-### No detecta mensajes
-
-1. Verificar topic MQTT correcto
-2. Verificar conexión al broker
-3. Agregar debug después de MQTT in
-4. Verificar formato del mensaje
-
-### Claude no responde
-
-1. Verificar API key válida
-2. Verificar headers correctos
-3. Ver respuesta de error en debug
-4. Verificar conexión a internet
-
-### Respuesta no llega al tracker
-
-1. Verificar topic de salida MQTT
-2. Verificar formato del mensaje
-3. Verificar que gateway Meshtastic está escuchando
+Add debug nodes after each step to see message flow:
+1. After MQTT In - see raw messages
+2. After Detect @claude - see filtered messages
+3. After Claude API - see responses
+4. After Format - see final output

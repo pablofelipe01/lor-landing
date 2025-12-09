@@ -2,196 +2,109 @@
 sidebar_position: 3
 ---
 
-# Trackers T1000-E
+# T1000-E Trackers
 
-Los trackers Seeed Studio SenseCAP Card Tracker T1000-E son los dispositivos de usuario final que permiten enviar y recibir mensajes a través de la red mesh.
+Portable devices for end users in the mesh network.
 
-## Especificaciones
+## Specifications
 
-| Característica | Valor |
-|----------------|-------|
-| Modelo | SenseCAP Card Tracker T1000-E |
-| Conectividad | LoRa 915 MHz |
-| GPS | Integrado |
-| Batería | Recargable USB-C |
-| Tamaño | Tamaño tarjeta de crédito |
-| Resistencia | IP65 (resistente al agua) |
+| Component | Details |
+|-----------|---------|
+| Model | Seeed Studio SenseCAP T1000-E |
+| LoRa | SX1262 |
+| GPS | Integrated |
+| Battery | 700mAh rechargeable |
+| Range | Up to 10km (line of sight) |
 
-## Características Principales
+## Features
 
-- **LoRa de largo alcance**: Comunicación hasta 10+ km
-- **GPS integrado**: Rastreo de ubicación
-- **Botón SOS**: Para emergencias
-- **LED indicador**: Estado de conexión
-- **Compacto**: Fácil de transportar
+- Compact and portable design
+- Long battery life (days with CLIENT_MUTE role)
+- Integrated GPS for location tracking
+- IP65 water resistant
+- Single button operation
 
-## Imagen del Dispositivo
+## Initial Setup
 
+### 1. Charge the device
+- Connect USB-C cable
+- LED indicates charging status
+- Full charge takes ~2 hours
+
+### 2. Power on
+- Press and hold button for 3 seconds
+- LED will blink to indicate power on
+
+### 3. Pair with Meshtastic app
+- Open Meshtastic app on your phone
+- Enable Bluetooth
+- Tap "+" to add device
+- Select the T1000-E from the list
+
+## Configuration
+
+### Region
 ```
-┌─────────────────────────────────┐
-│                                 │
-│     SenseCAP T1000-E           │
-│                                 │
-│   ┌─────┐                      │
-│   │ LED │  ◄── Indicador       │
-│   └─────┘                      │
-│                                 │
-│   ┌─────────────────────┐      │
-│   │                     │      │
-│   │      Pantalla       │      │
-│   │      (opcional)     │      │
-│   │                     │      │
-│   └─────────────────────┘      │
-│                                 │
-│         [BOTÓN SOS]            │
-│                                 │
-│                    USB-C ──►   │
-└─────────────────────────────────┘
-```
-
-## Configuración Inicial
-
-### 1. Cargar el Dispositivo
-
-Conectar vía USB-C y cargar completamente antes del primer uso.
-
-### 2. Encender
-
-Mantener presionado el botón principal por 3 segundos hasta que el LED parpadee.
-
-### 3. Configurar vía App Meshtastic
-
-1. Descargar la app Meshtastic (Android/iOS)
-2. Activar Bluetooth en el teléfono
-3. Abrir la app y buscar dispositivos
-4. Seleccionar el T1000-E
-5. Configurar parámetros
-
-### 4. Parámetros de Configuración
-
-| Parámetro | Valor |
-|-----------|-------|
-| Región | US (915 MHz) |
-| Canal | Test |
-| PSK | `Ml/5IOJQyplnvlzWmnvMrg==` |
-| Rol | CLIENT o CLIENT_MUTE |
-
-## Uso Diario
-
-### Enviar Mensaje Normal
-
-1. Abrir app Meshtastic
-2. Ir a "Messages"
-3. Escribir mensaje
-4. Enviar
-
-### Enviar Consulta a Claude AI
-
-Para recibir respuesta de la IA, incluir `@claude` en el mensaje:
-
-```
-@claude ¿Cuándo debo regar mis tomates?
+Settings → Radio → Region = US (915 MHz)
 ```
 
-### Ver Ubicación
+### Channel
+```
+Settings → Channels → Channel 0
+Name: Test
+PSK: Ml/5IOJQyplnvlzWmnvMrg==
+```
 
-La ubicación GPS se transmite automáticamente según la configuración del dispositivo.
+### Role
+For battery savings:
+```
+Settings → Device → Role = CLIENT_MUTE
+```
 
-## Indicadores LED
+## LED Indicators
 
-| Patrón LED | Significado |
-|------------|-------------|
-| Verde fijo | Conectado a la mesh |
-| Verde parpadeando | Transmitiendo |
-| Rojo fijo | Error o batería baja |
-| Rojo parpadeando | Cargando |
-| Apagado | Dispositivo apagado |
+| LED State | Meaning |
+|-----------|---------|
+| Green blinking | Normal operation |
+| Red solid | Low battery or error |
+| Blue blinking | Bluetooth pairing mode |
+| No LED | Powered off or deep sleep |
 
-## Roles del Dispositivo
+## Button Operations
 
-El T1000-E puede configurarse en diferentes roles:
+| Action | Function |
+|--------|----------|
+| Short press | Wake from sleep / Send location |
+| Long press (3s) | Power on/off |
+| Double press | Enter pairing mode |
+| Long press (15s) | Factory reset |
 
-### CLIENT (Por defecto)
+## Battery Management
 
-- Envía y recibe mensajes
-- Participa en el enrutamiento mesh
-- Transmite posición GPS
+### Extend battery life
+1. Use CLIENT_MUTE role
+2. Reduce GPS update frequency
+3. Disable screen (if equipped)
+4. Reduce LoRa transmit power if close to gateway
 
-### CLIENT_MUTE
-
-- Envía y recibe mensajes
-- NO participa en enrutamiento
-- Ahorra batería
-- Ideal para usuarios finales
-
-### ROUTER
-
-- Prioriza el enrutamiento de mensajes
-- Siempre activo
-- Mayor consumo de batería
-- Ideal para nodos fijos con alimentación
-
-## Cuidado y Mantenimiento
-
-### Carga
-
-- Usar cable USB-C de calidad
-- No dejar conectado indefinidamente después de carga completa
-- Cargar cuando llegue al 20%
-
-### Almacenamiento
-
-- Guardar en lugar seco
-- Temperatura ambiente (15-25°C)
-- Cargar al 50% si se almacena por largo tiempo
-
-### Limpieza
-
-- Limpiar con paño suave
-- No sumergir en agua (solo resistente a salpicaduras)
-- Mantener puertos limpios
+### Check battery status
+- In Meshtastic app: Device → Battery
+- Or via CLI: `meshtastic --info`
 
 ## Troubleshooting
 
-### No se conecta a la mesh
+### Won't power on
+1. Connect to USB charger
+2. Wait 10 minutes
+3. Try long press again
 
-1. Verificar que esté encendido (LED activo)
-2. Verificar configuración de región (US 915 MHz)
-3. Verificar canal y PSK
-4. Reiniciar el dispositivo
+### Not connecting to mesh
+1. Verify region = US
+2. Verify channel PSK matches
+3. Move closer to gateway
+4. Restart device
 
-### No recibe respuestas de Claude
-
-1. Verificar que el mensaje incluya `@claude`
-2. Verificar conectividad con el gateway
-3. Esperar hasta 30 segundos por respuesta
-
-### Batería se agota rápido
-
-1. Cambiar rol a CLIENT_MUTE
-2. Reducir frecuencia de transmisión GPS
-3. Reducir brillo de pantalla (si aplica)
-
-### GPS no funciona
-
-1. Ir a lugar abierto (sin techo)
-2. Esperar 2-3 minutos para fix inicial
-3. Verificar configuración de GPS en la app
-
-## Especificaciones Técnicas Detalladas
-
-| Especificación | Valor |
-|----------------|-------|
-| Frecuencia LoRa | 915 MHz (US) |
-| Potencia TX | Hasta 22 dBm |
-| Sensibilidad RX | -136 dBm |
-| Alcance | 10+ km (línea de vista) |
-| GPS | u-blox |
-| Precisión GPS | ±2.5m |
-| Batería | 700 mAh Li-Po |
-| Autonomía | 3-7 días (según uso) |
-| Carga | USB-C 5V |
-| Dimensiones | 85 x 55 x 6.5 mm |
-| Peso | 32g |
-| Protección | IP65 |
-| Temperatura | -20°C a 60°C |
+### Constant red LED
+1. Low battery - charge device
+2. If persists after charging, try factory reset
+3. Re-flash firmware if needed

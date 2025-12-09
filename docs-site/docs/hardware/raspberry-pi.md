@@ -2,227 +2,105 @@
 sidebar_position: 1
 ---
 
-# Raspberry Pi 5 - Gateway Principal
+# Raspberry Pi 5 (Gateway)
 
-El Raspberry Pi 5 actúa como el gateway principal de la red Meshtastic, conectando la red mesh LoRa con la infraestructura IP.
+The Raspberry Pi 5 serves as the main gateway of the mesh network.
 
-## Especificaciones
+## Specifications
 
-| Característica | Valor |
-|----------------|-------|
-| Modelo | Raspberry Pi 5 |
-| IP Red Externa | 192.168.68.127 |
-| Función | Gateway Meshtastic |
-| Sistema Operativo | Raspberry Pi OS (64-bit) |
-| Meshtastic | meshtastic-firmware |
+| Component | Details |
+|-----------|---------|
+| Model | Raspberry Pi 5 8GB |
+| Storage | 64GB microSD |
+| OS | Raspberry Pi OS Lite (64-bit) |
+| IP | 192.168.68.127 |
 
-## Rol en el Sistema
+## Functions
 
+1. **LoRa Gateway** - Connects LoRa module to IP network
+2. **MQTT Broker** - Runs Mosquitto for internal messaging
+3. **Meshtastic Daemon** - Manages LoRa communication
+
+## Connected Hardware
+
+- **Heltec ESP32 LoRa V3** via USB
+- **Power**: Official 27W USB-C power supply
+
+## Installed Services
+
+### Meshtastic
+```bash
+# Check status
+sudo systemctl status meshtastic
+
+# View logs
+journalctl -u meshtastic -f
+
+# Restart
+sudo systemctl restart meshtastic
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Raspberry Pi 5                           │
-│                    192.168.68.127                           │
-│                                                             │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
-│  │ Meshtastic  │    │    MQTT     │    │   Serial    │     │
-│  │   Web UI    │    │   Broker    │    │   LoRa      │     │
-│  │   :80       │    │   :1883     │    │   Module    │     │
-│  └─────────────┘    └─────────────┘    └─────────────┘     │
-│         │                  │                  │             │
-│         └──────────────────┼──────────────────┘             │
-│                            │                                │
-│                     Meshtastic                              │
-│                     Daemon                                  │
-└─────────────────────────────────────────────────────────────┘
-                             │
-                             │ Ethernet
-                             ▼
-                    Red 192.168.68.x
+
+### Mosquitto (MQTT)
+```bash
+# Check status
+sudo systemctl status mosquitto
+
+# Test connection
+mosquitto_sub -h localhost -t "test"
 ```
 
-## Acceso
+## Access
 
 ### SSH
-
 ```bash
 ssh pi@192.168.68.127
 ```
 
-### Web UI Meshtastic
-
-Abrir en navegador:
+### Web Interface
 ```
 http://192.168.68.127
 ```
 
-## Servicios Activos
+## Useful Commands
 
-### Meshtastic Server
-
-El servicio Meshtastic corre automáticamente al iniciar:
-
+### View connected nodes
 ```bash
-# Ver estado
-sudo systemctl status meshtastic
-
-# Reiniciar servicio
-sudo systemctl restart meshtastic
-
-# Ver logs
-journalctl -u meshtastic -f
-```
-
-### MQTT Broker (Mosquitto)
-
-El broker MQTT permite la comunicación entre Meshtastic y Node-RED:
-
-```bash
-# Ver estado
-sudo systemctl status mosquitto
-
-# Reiniciar
-sudo systemctl restart mosquitto
-
-# Ver mensajes en tiempo real
-mosquitto_sub -h localhost -t "meshtastic/#" -v
-```
-
-## Configuración de Red
-
-El Raspberry Pi está configurado con IP estática:
-
-```bash
-# Archivo de configuración
-/etc/dhcpcd.conf
-
-# Configuración relevante:
-interface eth0
-static ip_address=192.168.68.127/24
-static routers=192.168.68.1
-static domain_name_servers=8.8.8.8 8.8.4.4
-```
-
-## Módulo LoRa Conectado
-
-El Raspberry Pi tiene conectado un módulo LoRa vía USB o GPIO:
-
-- **Tipo**: Compatible con Meshtastic
-- **Frecuencia**: 915 MHz (Región US)
-- **Conexión**: USB (/dev/ttyUSB0 o /dev/ttyACM0)
-
-### Verificar Conexión
-
-```bash
-# Listar dispositivos USB
-lsusb
-
-# Ver puertos seriales
-ls -la /dev/tty*
-
-# Verificar que Meshtastic detecta el dispositivo
-meshtastic --info
-```
-
-## Comandos Útiles Meshtastic
-
-```bash
-# Ver información del nodo
-meshtastic --info
-
-# Ver nodos conectados
 meshtastic --nodes
-
-# Enviar mensaje de prueba
-meshtastic --sendtext "Test desde gateway"
-
-# Configurar región
-meshtastic --set lora.region US
-
-# Ver configuración completa
-meshtastic --get all
 ```
 
-## Monitoreo
-
-### Ver Mensajes Entrantes
-
+### View node info
 ```bash
-# Via MQTT
-mosquitto_sub -h localhost -t "meshtastic/2/json/#" -v
+meshtastic --info
+```
 
-# Via meshtastic CLI
+### Send test message
+```bash
+meshtastic --sendtext "Test message"
+```
+
+### Listen to messages
+```bash
 meshtastic --listen
 ```
 
-### Logs del Sistema
+## Maintenance
 
+### Check disk space
 ```bash
-# Logs de Meshtastic
-journalctl -u meshtastic -f
-
-# Logs del sistema
-dmesg | tail -50
-
-# Espacio en disco
 df -h
 ```
 
-## Troubleshooting
-
-### El módulo LoRa no es detectado
-
-1. Verificar conexión física
-2. Revisar `dmesg` para errores USB
-3. Reiniciar el Raspberry Pi
-
+### Check memory
 ```bash
-dmesg | grep -i usb
-sudo reboot
+free -h
 ```
 
-### No hay comunicación MQTT
-
-1. Verificar que Mosquitto está corriendo
-2. Probar conexión local
-
+### Check temperature
 ```bash
-sudo systemctl status mosquitto
-mosquitto_pub -h localhost -t "test" -m "hello"
-mosquitto_sub -h localhost -t "test"
+vcgencmd measure_temp
 ```
 
-### Meshtastic no inicia
-
+### Update system
 ```bash
-# Ver logs detallados
-journalctl -u meshtastic -n 100
-
-# Reinstalar si es necesario
-pip3 install --upgrade meshtastic
-```
-
-## Mantenimiento
-
-### Actualizar Sistema
-
-```bash
-sudo apt update
-sudo apt upgrade -y
-```
-
-### Actualizar Meshtastic
-
-```bash
-pip3 install --upgrade meshtastic
-sudo systemctl restart meshtastic
-```
-
-### Backup de Configuración
-
-```bash
-# Exportar configuración Meshtastic
-meshtastic --export-config > meshtastic-backup.yaml
-
-# Backup de archivos importantes
-tar -czf rpi-backup.tar.gz /etc/dhcpcd.conf /etc/mosquitto/
+sudo apt update && sudo apt upgrade -y
 ```

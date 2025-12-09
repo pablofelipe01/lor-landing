@@ -3,32 +3,22 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Red Mesh LoRa + Claude AI',
-  tagline: 'Conectividad Rural con Inteligencia Artificial',
+  title: 'LoRa Mesh + Claude AI',
+  tagline: 'Rural Connectivity with Artificial Intelligence',
   favicon: 'img/favicon.ico',
 
-  url: 'https://docs.conectividadrurallatam.com',
+  url: 'https://conectividadrurallatam.com',
   baseUrl: '/docs/',
 
   organizationName: 'conectividad-rural-latam',
-  projectName: 'red-mesh-lora-docs',
+  projectName: 'lora-mesh-docs',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
-    defaultLocale: 'es',
-    locales: ['es', 'en'],
-    localeConfigs: {
-      es: {
-        label: 'Español',
-        htmlLang: 'es',
-      },
-      en: {
-        label: 'English',
-        htmlLang: 'en',
-      },
-    },
+    defaultLocale: 'en',
+    locales: ['en'],
   },
 
   presets: [
@@ -53,7 +43,7 @@ const config = {
     ({
       image: 'img/social-card.jpg',
       navbar: {
-        title: 'Red Mesh LoRa + Claude AI',
+        title: 'LoRa Mesh + Claude AI',
         logo: {
           alt: 'Conectividad Rural LATAM',
           src: 'img/logo.png',
@@ -63,15 +53,11 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Documentación',
-          },
-          {
-            type: 'localeDropdown',
-            position: 'right',
+            label: 'Documentation',
           },
           {
             href: 'https://conectividadrurallatam.com',
-            label: 'Sitio Principal',
+            label: 'Main Site',
             position: 'right',
           },
         ],
@@ -80,10 +66,10 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Documentación',
+            title: 'Documentation',
             items: [
               {
-                label: 'Introducción',
+                label: 'Introduction',
                 to: '/',
               },
               {
@@ -91,29 +77,29 @@ const config = {
                 to: '/hardware/raspberry-pi',
               },
               {
-                label: 'Configuración',
-                to: '/configuracion/meshtastic',
+                label: 'Configuration',
+                to: '/configuration/meshtastic',
               },
             ],
           },
           {
-            title: 'Comunidad',
+            title: 'Community',
             items: [
               {
                 label: 'Discord Meshtastic',
                 href: 'https://discord.gg/meshtastic',
               },
               {
-                label: 'Foro Meshtastic',
+                label: 'Meshtastic Forum',
                 href: 'https://meshtastic.discourse.group/',
               },
             ],
           },
           {
-            title: 'Más',
+            title: 'More',
             items: [
               {
-                label: 'Sitio Principal',
+                label: 'Main Site',
                 href: 'https://conectividadrurallatam.com',
               },
               {
@@ -123,7 +109,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Red Mesh LoRa + Claude AI. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} LoRa Mesh + Claude AI. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
