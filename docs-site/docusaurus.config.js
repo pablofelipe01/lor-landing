@@ -5,7 +5,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'LoRa Mesh + Claude AI',
   tagline: 'Rural Connectivity with Artificial Intelligence',
-  favicon: 'img/favicon.ico',
+  favicon: 'favicon.ico',
 
   url: 'https://www.inverseneurallab.com',
   baseUrl: '/docs/',

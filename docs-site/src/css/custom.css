@@ -32,3 +32,25 @@
   --ifm-background-color: #0c4a6e;
   --ifm-navbar-background-color: #082f49;
 }
+
+/* Footer styles - Sky blue theme */
+.footer--dark {
+  --ifm-footer-background-color: #0c4a6e;
+  background-color: #0c4a6e;
+}
+
+.footer--dark .footer__title {
+  color: #38bdf8;
+}
+
+.footer--dark .footer__link-item {
+  color: #bae6fd;
+}
+
+.footer--dark .footer__link-item:hover {
+  color: #ffffff;
+}
+
+.footer--dark .footer__copyright {
+  color: #7dd3fc;
+}
