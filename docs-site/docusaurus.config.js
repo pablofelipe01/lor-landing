@@ -104,7 +104,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/conectividad-rural-latam',
+                href: 'https://github.com/pablofelipe01/lor-landing',
               },
             ],
           },
