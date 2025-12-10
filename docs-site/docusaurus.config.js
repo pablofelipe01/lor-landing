@@ -7,7 +7,7 @@ const config = {
   tagline: 'Rural Connectivity with Artificial Intelligence',
   favicon: 'img/favicon.ico',
 
-  url: 'https://conectividadrurallatam.com',
+  url: 'https://www.inverseneurallab.com',
   baseUrl: '/docs/',
 
   organizationName: 'conectividad-rural-latam',
@@ -56,7 +56,7 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://conectividadrurallatam.com',
+            href: 'https://www.inverseneurallab.com',
             label: 'Main Site',
             position: 'right',
           },
@@ -100,7 +100,7 @@ const config = {
             items: [
               {
                 label: 'Main Site',
-                href: 'https://conectividadrurallatam.com',
+                href: 'https://www.inverseneurallab.com',
               },
               {
                 label: 'GitHub',
