@@ -35,6 +35,7 @@ export const sectionIds = {
   funding: 'financiamiento',
   faq: 'faq',
   contact: 'contacto',
+  b2b: 'empresas',
 } as const
 
 export type SectionId = typeof sectionIds[keyof typeof sectionIds]

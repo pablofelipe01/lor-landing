@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CTAButton } from './ui'
 import { sectionIds } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
 
@@ -18,6 +17,7 @@ export function Navigation() {
     { label: t('nav.impact'), href: `#${sectionIds.impact}` },
     { label: t('nav.roadmap'), href: `#${sectionIds.roadmap}` },
     { label: t('nav.faq'), href: `#${sectionIds.faq}` },
+    { label: t('nav.b2b'), href: `#${sectionIds.b2b}`, highlight: true },
   ]
 
   useEffect(() => {
@@ -74,13 +74,15 @@ export function Navigation() {
             </a>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-6">
               {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary-600 ${
-                    isScrolled ? 'text-gray-600' : 'text-gray-700'
+                  className={`text-sm font-medium transition-colors ${
+                    item.highlight
+                      ? 'px-3 py-1.5 bg-primary-500 text-white rounded-full hover:bg-primary-600'
+                      : `hover:text-primary-600 ${isScrolled ? 'text-gray-600' : 'text-gray-700'}`
                   }`}
                 >
                   {item.label}
@@ -88,7 +90,7 @@ export function Navigation() {
               ))}
             </div>
 
-            {/* Desktop CTAs + Language Switcher */}
+            {/* Desktop Language Switcher */}
             <div className="hidden lg:flex items-center gap-3">
               {/* Language Switcher */}
               <button
@@ -104,10 +106,6 @@ export function Navigation() {
                 </svg>
                 {language === 'es' ? 'EN' : 'ES'}
               </button>
-
-              <CTAButton href={`#${sectionIds.funding}`} size="sm">
-                {t('nav.fundProject')}
-              </CTAButton>
             </div>
 
             {/* Mobile: Language + Menu button */}
@@ -191,23 +189,16 @@ export function Navigation() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block py-3 px-4 text-lg font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                      className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
+                        item.highlight
+                          ? 'bg-primary-500 text-white hover:bg-primary-600'
+                          : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                      }`}
                     >
                       {item.label}
                     </a>
                   ))}
                 </nav>
-
-                {/* CTAs */}
-                <div className="mt-8">
-                  <CTAButton
-                    href={`#${sectionIds.funding}`}
-                    className="w-full justify-center"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {t('nav.fundProject')}
-                  </CTAButton>
-                </div>
 
                 {/* Bottom info */}
                 <div className="mt-8 pt-8 border-t border-gray-200">

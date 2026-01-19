@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { CTAButton } from './ui'
 import { sectionIds } from '@/lib/utils'
 import { useI18n } from '@/lib/i18n'
 
@@ -20,30 +19,6 @@ export function Footer() {
 
   return (
     <footer className="bg-gray-900 text-white">
-      {/* Pre-footer CTA */}
-      <div className="border-b border-gray-800">
-        <div className="container-custom py-16 px-4 md:px-8">
-          <motion.div
-            className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              {t('footer.ctaTitle')}
-            </h2>
-            <p className="text-gray-400 mb-8">
-              {t('footer.ctaSubtitle')}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <CTAButton href={`#${sectionIds.funding}`} size="lg">
-                {t('nav.fundProject')}
-              </CTAButton>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
       {/* Main footer */}
       <div className="container-custom py-12 px-4 md:px-8">
         <div className="grid md:grid-cols-4 gap-8">
