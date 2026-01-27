@@ -10,7 +10,7 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const navItems = [
+  const navItems: Array<{ label: string; href: string; highlight?: boolean }> = [
     { label: t('nav.problem'), href: `#${sectionIds.problem}` },
     { label: t('nav.solution'), href: `#${sectionIds.solution}` },
     { label: t('nav.useCases'), href: `#${sectionIds.useCases}` },
