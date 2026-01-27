@@ -10,7 +10,7 @@ import {
   Funding,
   FAQ,
   Footer,
-  B2B,
+  // B2B,
 } from '@/components'
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
         <Roadmap />
         <Funding />
         <FAQ />
-        <B2B />
+        {/* <B2B /> */}
       </main>
       <Footer />
     </>

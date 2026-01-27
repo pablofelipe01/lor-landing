@@ -17,7 +17,7 @@ export function Navigation() {
     { label: t('nav.impact'), href: `#${sectionIds.impact}` },
     { label: t('nav.roadmap'), href: `#${sectionIds.roadmap}` },
     { label: t('nav.faq'), href: `#${sectionIds.faq}` },
-    { label: t('nav.b2b'), href: `#${sectionIds.b2b}`, highlight: true },
+    // { label: t('nav.b2b'), href: `#${sectionIds.b2b}`, highlight: true },
   ]
 
   useEffect(() => {
