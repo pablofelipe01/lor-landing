@@ -42,19 +42,19 @@ const countriesData = [
 
 // Comparison table data
 const comparisonFeatures = [
-  { key: 'compInitialInvestment', sirius: '$14K', satellite: '$108K', radios: '$15K', cellular: '$500K-2M' },
-  { key: 'compMonthlyCost', sirius: '$83', satellite: '$4-6K', radios: '$0', cellular: '$5-15K' },
-  { key: 'compRange', sirius: '100-200km²', satellite: 'globalLimited', radios: '5-15km', cellular: '5-20km/torre' },
-  { key: 'compDataTransmission', sirius: 'yes', satellite: 'yes', radios: 'voiceOnly', cellular: 'yes' },
-  { key: 'compMeshInternet', sirius: 'meshInternetFull', satellite: 'meshInternetNA', radios: 'no', cellular: 'meshInternetOneWay' },
-  { key: 'compEncryption', sirius: 'aes256', satellite: 'yes', radios: 'no', cellular: 'yes' },
-  { key: 'compCustomApps', sirius: 'tailorMade', satellite: 'generic', radios: 'no', cellular: 'partial' },
-  { key: 'compAI', sirius: 'included', satellite: 'extra', radios: 'no', cellular: 'extra' },
-  { key: 'compImplementation', sirius: '3-4 sem', satellite: '1-2 meses', radios: '1-2 sem', cellular: '12-36 meses' },
-  { key: 'compOwnership', sirius: 'clientOwned', satellite: 'rented', radios: 'yes', cellular: 'partial' },
-  { key: 'compScalability', sirius: 'costDecreases', satellite: 'linear', radios: 'partial', cellular: 'no' },
-  { key: 'compROI', sirius: '1-2 meses', satellite: 'never', radios: '6-12 meses', cellular: '10+ anos' },
-  { key: 'compOffline', sirius: 'yes', satellite: 'no', radios: 'yes', cellular: 'no' },
+  { key: 'compInitialInvestment', inl: '$14K', satellite: '$108K', radios: '$15K', cellular: '$500K-2M' },
+  { key: 'compMonthlyCost', inl: '$83', satellite: '$4-6K', radios: '$0', cellular: '$5-15K' },
+  { key: 'compRange', inl: '100-200km²', satellite: 'globalLimited', radios: '5-15km', cellular: '5-20km/torre' },
+  { key: 'compDataTransmission', inl: 'yes', satellite: 'yes', radios: 'voiceOnly', cellular: 'yes' },
+  { key: 'compMeshInternet', inl: 'meshInternetFull', satellite: 'meshInternetNA', radios: 'no', cellular: 'meshInternetOneWay' },
+  { key: 'compEncryption', inl: 'aes256', satellite: 'yes', radios: 'no', cellular: 'yes' },
+  { key: 'compCustomApps', inl: 'tailorMade', satellite: 'generic', radios: 'no', cellular: 'partial' },
+  { key: 'compAI', inl: 'included', satellite: 'extra', radios: 'no', cellular: 'extra' },
+  { key: 'compImplementation', inl: '3-4 sem', satellite: '1-2 meses', radios: '1-2 sem', cellular: '12-36 meses' },
+  { key: 'compOwnership', inl: 'clientOwned', satellite: 'rented', radios: 'yes', cellular: 'partial' },
+  { key: 'compScalability', inl: 'costDecreases', satellite: 'linear', radios: 'partial', cellular: 'no' },
+  { key: 'compROI', inl: '1-2 meses', satellite: 'never', radios: '6-12 meses', cellular: '10+ anos' },
+  { key: 'compOffline', inl: 'yes', satellite: 'no', radios: 'yes', cellular: 'no' },
 ]
 
 // Latin American countries for form
@@ -634,7 +634,7 @@ export function B2B() {
               <thead>
                 <tr className="bg-slate-800 text-white">
                   <th className="px-4 py-4 text-left font-semibold">{t('b2b.compFeature')}</th>
-                  <th className="px-4 py-4 text-center font-semibold bg-primary-600">{t('b2b.compSirius')}</th>
+                  <th className="px-4 py-4 text-center font-semibold bg-primary-600">{t('b2b.compInl')}</th>
                   <th className="px-4 py-4 text-center font-semibold">{t('b2b.compSatellite')}</th>
                   <th className="px-4 py-4 text-center font-semibold">{t('b2b.compRadios')}</th>
                   <th className="px-4 py-4 text-center font-semibold">{t('b2b.compCellular')}</th>
@@ -645,7 +645,7 @@ export function B2B() {
                   <tr key={index} className="hover:bg-slate-50 transition-colors">
                     <td className="px-4 py-4 font-medium text-slate-900">{t(`b2b.${row.key}`)}</td>
                     <td className="px-4 py-4 text-center bg-primary-50 font-semibold text-primary-800">
-                      {renderCellValue(row.sirius)}
+                      {renderCellValue(row.inl)}
                     </td>
                     <td className="px-4 py-4 text-center text-slate-600">{renderCellValue(row.satellite)}</td>
                     <td className="px-4 py-4 text-center text-slate-600">{renderCellValue(row.radios)}</td>

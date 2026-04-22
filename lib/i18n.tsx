@@ -381,7 +381,7 @@ const translations = {
     // B2B Section
     'b2b.badge': 'Soluciones B2B',
     'b2b.heroTitle': '400 Millones de Hectareas en Latinoamerica Sin Conectividad',
-    'b2b.heroSubtitle': '15 millones de productores agricolas operan sin comunicacion confiable. Las soluciones tradicionales cuestan hasta 95% mas que Sirius Mesh Gateway.',
+    'b2b.heroSubtitle': '15 millones de productores agricolas operan sin comunicacion confiable. Las soluciones tradicionales cuestan hasta 95% mas que INL Mesh Gateway.',
     'b2b.stat1Value': '62-70%',
     'b2b.stat1Label': 'Superficie agricola desconectada',
     'b2b.stat2Value': 'USD 2,150M',
@@ -447,7 +447,7 @@ const translations = {
     // B2B Comparison Table
     'b2b.compTableTitle': 'Comparativa de Soluciones para 50 Trabajadores y 5,000 Hectareas',
     'b2b.compFeature': 'Caracteristica',
-    'b2b.compSirius': 'Sirius Mesh',
+    'b2b.compInl': 'INL Mesh',
     'b2b.compSatellite': 'Satelital',
     'b2b.compRadios': 'Radios',
     'b2b.compCellular': 'Celular/Torres',
@@ -881,7 +881,7 @@ const translations = {
     // B2B Section
     'b2b.badge': 'B2B Solutions',
     'b2b.heroTitle': '400 Million Hectares in Latin America Without Connectivity',
-    'b2b.heroSubtitle': '15 million agricultural producers operate without reliable communication. Traditional solutions cost up to 95% more than Sirius Mesh Gateway.',
+    'b2b.heroSubtitle': '15 million agricultural producers operate without reliable communication. Traditional solutions cost up to 95% more than INL Mesh Gateway.',
     'b2b.stat1Value': '62-70%',
     'b2b.stat1Label': 'Disconnected agricultural area',
     'b2b.stat2Value': 'USD 2,150M',
@@ -947,7 +947,7 @@ const translations = {
     // B2B Comparison Table
     'b2b.compTableTitle': 'Solution Comparison for 50 Workers and 5,000 Hectares',
     'b2b.compFeature': 'Feature',
-    'b2b.compSirius': 'Sirius Mesh',
+    'b2b.compInl': 'INL Mesh',
     'b2b.compSatellite': 'Satellite',
     'b2b.compRadios': 'Radios',
     'b2b.compCellular': 'Cellular/Towers',
