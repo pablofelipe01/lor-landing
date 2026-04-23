@@ -276,7 +276,7 @@ export function B2B() {
                   poster="/images/video-poster-b2b.jpg"
                 >
                   <source
-                    src={language === 'es' ? '/images/video2espanol.mp4' : '/images/video2english.mp4'}
+                    src="/images/video2english.mp4"
                     type="video/mp4"
                   />
                   Your browser does not support the video tag.
