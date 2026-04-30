@@ -1,0 +1,123 @@
+---
+title: "Bidirectional Tokenization: por qué los tokens crypto fallan al modelo que prometieron"
+slug: "bidirectional-tokenization-fallo-crypto"
+date: "2026-04-22"
+lang: "es"
+translationSlug: "bidirectional-tokenization-crypto-broken-promise"
+excerpt: "Los tokens se volvieron lo opuesto a lo que Satoshi propuso: vehículos de especulación con valor desacoplado de su utilidad. Bidirectional Tokenization (BTM) es una propuesta correctiva basada en bonding curves y reservas verificables. Acá el argumento, con la matemática."
+tags: ["blockchain", "crypto", "btm", "bonding-curves", "tokenomics", "ensayo"]
+category: "essay"
+author: "Pablo F. Acebedo"
+draft: false
+---
+
+Cuando Satoshi propuso Bitcoin en 2008, la promesa era específica: un sistema de efectivo electrónico peer-to-peer cuyo **valor estuviera anclado en su utilidad transaccional**. El whitepaper no menciona "investment", "store of value" o "appreciation". La palabra que aparece una y otra vez es *transaction*. El modelo era simple: el token vale lo que vale moverlo[^1].
+
+Diecisiete años después, esa propuesta no sólo no se cumplió — se invirtió. La inmensa mayoría de los tokens hoy no se valoran por su utilidad transaccional. Se valoran por la creencia colectiva de que otra persona los va a comprar más caro mañana. Casino dynamics, tirada en cadena. El token devino el producto en vez del medio.
+
+Voy a argumentar dos cosas en este ensayo:
+
+1. Esto no es un accidente. Es una consecuencia matemática de cómo se diseñan la mayoría de los tokens.
+2. Hay una corrección posible — la llamamos **Bidirectional Tokenization** (BTM) — que reata el valor del token a sus reservas verificables, vía bonding curves explícitas. No es novedad teórica, pero sí una posición fuerte sobre cómo desplegar tokens éticamente.
+
+## Lo que falló
+
+Un token estándar — un ERC-20 cualquiera, una memecoin de turno — nace con un suministro fijo o con reglas de emisión preestablecidas. Su precio se descubre en exchanges (centralizados o AMMs) según oferta y demanda. La oferta está determinada por el contrato; la demanda, por el mercado. No hay relación matemática directa entre el token y un *colateral verificable*. Lo único que respalda el precio es la creencia de los próximos compradores.
+
+<Callout type="insight">
+Esto suena obvio cuando lo decís así, pero es la fractura que define a la cripto como activo financiero versus la cripto como infraestructura. La infraestructura tiene métricas operativas: throughput, fees, uptime. El activo financiero, una vez que se desacopla de esas métricas, se mueve por reflexividad pura.
+</Callout>
+
+El resultado predecible: el precio sube cuando alguien grita más fuerte y baja cuando alguien grita más fuerte en la dirección opuesta. La narrativa hace lo que el colateral debería hacer. Los proyectos que más dinero recaudan no son los más útiles — son los que mejor distribuyen incentivos especulativos a corto plazo. *Memetics* le gana a *mechanics*.
+
+## La matemática del problema
+
+Considerá un token con suministro $s$ y precio de mercado $p$. La capitalización es trivialmente:
+
+$$
+M = p \cdot s
+$$
+
+En un token estándar, $p$ es endógenamente determinado por el equilibrio de un order book o un AMM (típicamente Uniswap-style con la invariante $x \cdot y = k$). En ningún momento existe una relación funcional impuesta entre $s$, $p$ y un *reserve* externo $R$.
+
+Cuando el token corre en un AMM constante-producto, sí hay una relación local entre el precio y la liquidez del pool, pero esa liquidez es retirable, fragmentaria y arbitrable. Es liquidez de mercado, no colateral. Si todos los LPs retiran al mismo tiempo, el precio no tiene piso[^2].
+
+## Bonding curves: la otra forma de hacerlo
+
+Una **bonding curve** es una función explícita que define el precio del token como función monotónicamente creciente del suministro circulante:
+
+$$
+p = f(s)
+$$
+
+Cuando alguien acuña un token, el contrato cobra $f(s)$ en moneda de reserva (ETH, USDC, lo que sea) y emite la unidad. Cuando alguien quema un token, el contrato devuelve $f(s)$ desde la reserva. La reserva es la integral del precio respecto al suministro:
+
+$$
+R(s) = \int_0^s f(x)\, dx
+$$
+
+La forma específica de $f$ define la curva. Una elección popular y bien estudiada es la curva potencia:
+
+$$
+f(s) = k \cdot s^{n}
+$$
+
+Para $n = 0.5$ — que es la que hemos venido usando en BTM — la integral es:
+
+$$
+R(s) = k \cdot \int_0^s x^{0.5}\, dx = \frac{2k}{3} \cdot s^{3/2}
+$$
+
+Lo cual significa que el suministro puede recuperarse exactamente a partir de la reserva acumulada:
+
+$$
+s = \left(\frac{3R}{2k}\right)^{2/3}
+$$
+
+<Callout type="technical" title="Por qué $n = 0.5$">
+La elección de $n$ no es estética. Curvas con $n$ alto (lineales o cuadráticas) penalizan demasiado a los compradores tardíos y crean dinámicas de pump tempranas. Curvas con $n$ muy bajo (logarítmicas) requieren mucha reserva para precios altos, lo que las hace ineficientes en capital. $n = 0.5$ es un punto razonable: el precio crece pero a velocidad sublineal, lo que evita que los primeros compradores capturen toda la reserva. Esto no es un universal — es un compromiso defendible.
+</Callout>
+
+## Bidirectional: dos direcciones, no una
+
+La parte *bidirectional* es la que el nombre anuncia y la mayoría de los esquemas convencionales de bonding curve omiten o degradan. Significa dos cosas concretas:
+
+1. **Mintar y burnar al mismo precio justo.** El usuario que compra paga $f(s)$. El usuario que vende cobra $f(s - 1)$. Sin slippage adicional, sin tarifas extractivas. La reserva es siempre suficiente para honrar todos los burns posibles, porque la fórmula misma lo garantiza.
+
+2. **Reverso completo de salida.** No hay "lock-up" implícito ni asimetría operativa. Cualquier holder puede convertir tokens en reserva en cualquier momento, sin atravesar un mercado secundario, sin depender de la liquidez ajena. Esto desarma la dinámica de "no podés vender porque no hay comprador" que caracteriza a la mayoría de los tokens en bear markets.
+
+La consecuencia matemática es elegante. Si $f$ es continua, monotónica creciente y la reserva se mantiene sincronizada por construcción, entonces el token tiene un **precio piso verificable on-chain**: $f(s)$. No es una promesa. Es una invariante del contrato.
+
+## Lo que esto cambia, y lo que no
+
+Lo que cambia es la naturaleza del riesgo. Un holder de un token bonded sabe — *sabe*, no infiere — qué precio recibe si decide salir. La diferencia entre el precio actual y la curva representa la prima especulativa, no el valor total. Esa prima puede ser cero, puede ser negativa[^3], puede ser muy positiva en momentos de demanda — pero siempre existe el suelo definido por la integral.
+
+Lo que **no** cambia es la pregunta de para qué sirve el token. La bonding curve no inventa utilidad — la administra. Si el proyecto detrás del token no produce algo de valor real (acceso, governance funcional, prestación operativa), entonces el token será exactamente tan útil como un instrumento de ahorro con una curva de pago predecible. Lo cual no es nada — es algo. Pero no es magia.
+
+<Callout type="warning" title="No es una panacea">
+He visto a proyectos usar bonding curves como ornamento. Curva sí, reserva no. Curva sí, derecho de quema vendor-locked. Curva sí, multisig admin que puede pausar redenciones. Cada uno de esos detalles destruye la garantía. La bonding curve sin la auditoría de la reserva, sin la inmutabilidad del contrato, sin el derecho irrestricto de quema, es teatro.
+</Callout>
+
+## El argumento ético
+
+Hay un componente normativo en esta propuesta que evito disfrazar de técnico. Construir un sistema de tokens en el que un holder no puede inferir su salida es, en mi opinión, una falta de respeto operacional. Es subcontratar el riesgo a personas que no tienen la información para evaluarlo. La asimetría de información entre el equipo del proyecto y el comprador retail es, hoy, abrumadora. Una bonding curve verificable on-chain colapsa esa asimetría hasta cero — no en el upside (donde ningún sistema puede), sino en el downside, que es donde el daño se concentra.
+
+El argumento de Satoshi era sobre soberanía monetaria. El argumento de BTM, derivado, es sobre **soberanía de salida**. Si no podés salir cuando querés, al precio que dice el contrato, no tenés soberanía financiera — tenés una membresía a un club privado.
+
+## ¿Y de acá a dónde?
+
+He estado escribiendo sobre esto por algunos años en Medium[^4]. Lo que cambió últimamente es la realización de que el problema no se resuelve con más sofisticación matemática — las curvas existen, las primitivas existen, las herramientas de auditoría existen. Lo que falta es disposición a usarlas.
+
+En Inverse Neural Lab estamos arrancando un par de implementaciones BTM en proyectos de infraestructura rural y energía descentralizada — donde el token representa un derecho operacional sobre un activo físico (electricidad, conectividad, capacidad de cómputo) y la bonding curve administra emisión y redención. Es la única forma que conozco de darle a un usuario rural — alguien que no tiene tiempo de leer whitepapers — una garantía verificable de que su participación tiene un piso.
+
+Vamos a publicar más sobre esto: el código, la matemática completa, las simulaciones de stress. Si te interesa el argumento o querés ver dónde rompe, escribinos.
+
+---
+
+[^1]: El whitepaper de Bitcoin de Satoshi Nakamoto, octubre 2008, "Bitcoin: A Peer-to-Peer Electronic Cash System". El término *peer-to-peer electronic cash* no es accidental — el modelo conceptual es efectivo, no inversión.
+
+[^2]: Esto se mostró dramáticamente en eventos como el colapso de UST/LUNA en mayo de 2022. La liquidez "respaldada" por reflexividad colapsa instantáneamente cuando la confianza colectiva se evapora, porque no había una invariante de contrato que la sostuviera.
+
+[^3]: La prima puede ser negativa cuando el token cotiza por debajo de la curva — lo cual abre una oportunidad de arbitraje obvia: comprar en el mercado secundario, quemar contra la reserva. En un sistema bidirectional bien implementado este arbitraje cierra el spread automáticamente.
+
+[^4]: He cubierto los detalles más técnicos en posts en Medium bajo el handle @pablo-toksol. Algunos de los argumentos de este ensayo son refinamientos de cosas que escribí ahí.

@@ -1,0 +1,123 @@
+---
+title: "Bidirectional Tokenization: why crypto tokens betray the model they promised"
+slug: "bidirectional-tokenization-crypto-broken-promise"
+date: "2026-04-22"
+lang: "en"
+translationSlug: "bidirectional-tokenization-fallo-crypto"
+excerpt: "Tokens have become the opposite of what Satoshi proposed: speculation vehicles whose value is decoupled from their utility. Bidirectional Tokenization (BTM) is a corrective proposal grounded in bonding curves and verifiable reserves. Here is the argument, with the math."
+tags: ["blockchain", "crypto", "btm", "bonding-curves", "tokenomics", "essay"]
+category: "essay"
+author: "Pablo F. Acebedo"
+draft: false
+---
+
+When Satoshi proposed Bitcoin in 2008, the promise was specific: a peer-to-peer electronic cash system whose **value would be anchored in its transactional utility**. The whitepaper does not mention "investment", "store of value", or "appreciation". The word that recurs is *transaction*. The model was simple: the token is worth what moving it is worth[^1].
+
+Seventeen years later, that proposal has not just gone unfulfilled — it has been inverted. The vast majority of tokens today are not valued by their transactional utility. They are valued by the collective belief that someone else will buy them more expensively tomorrow. Casino dynamics, on chain. The token became the product instead of the medium.
+
+I will argue two things in this essay:
+
+1. This is not an accident. It is a mathematical consequence of how most tokens are designed.
+2. There is a corrective option — we call it **Bidirectional Tokenization** (BTM) — that re-anchors token value to verifiable reserves via explicit bonding curves. It is not a theoretical novelty, but it is a strong position on how tokens should be deployed ethically.
+
+## What broke
+
+A standard token — any ERC-20, the memecoin of the week — is born with either fixed supply or pre-defined emission rules. Its price is discovered on exchanges (centralized or AMMs) by supply and demand. Supply is set by the contract; demand is set by the market. There is no direct mathematical relationship between the token and a *verifiable collateral*. The only thing backing the price is the belief of the next buyer.
+
+<Callout type="insight">
+This sounds obvious when you say it like that, but it is the fault line that separates crypto-as-financial-asset from crypto-as-infrastructure. Infrastructure has operational metrics: throughput, fees, uptime. The financial asset, once decoupled from those metrics, moves on pure reflexivity.
+</Callout>
+
+The predictable result: price rises when someone shouts louder, and falls when someone shouts louder in the opposite direction. Narrative does the work that collateral should do. The projects that raise the most money are not the most useful — they are the ones that best distribute short-term speculative incentives. *Memetics* beats *mechanics*.
+
+## The math of the failure
+
+Consider a token with supply $s$ and market price $p$. Market capitalization is trivially:
+
+$$
+M = p \cdot s
+$$
+
+In a standard token, $p$ is endogenously determined by the equilibrium of an order book or an AMM (typically Uniswap-style with the constant-product invariant $x \cdot y = k$). At no point is there an imposed functional relationship between $s$, $p$, and an external reserve $R$.
+
+When the token runs on a constant-product AMM there is, yes, a local relationship between price and pool liquidity, but that liquidity is withdrawable, fragmented, and arbitrageable. It is market liquidity, not collateral. If every LP withdraws at the same time, there is no floor under the price[^2].
+
+## Bonding curves: the other way to do it
+
+A **bonding curve** is an explicit function that defines the price of the token as a monotonically increasing function of circulating supply:
+
+$$
+p = f(s)
+$$
+
+When someone mints a token, the contract charges $f(s)$ in the reserve currency (ETH, USDC, whatever) and emits the unit. When someone burns a token, the contract pays $f(s)$ back from the reserve. The reserve is the integral of the price with respect to supply:
+
+$$
+R(s) = \int_0^s f(x)\, dx
+$$
+
+The specific shape of $f$ defines the curve. A popular and well-studied choice is the power curve:
+
+$$
+f(s) = k \cdot s^{n}
+$$
+
+For $n = 0.5$ — the one we have been using in BTM — the integral is:
+
+$$
+R(s) = k \cdot \int_0^s x^{0.5}\, dx = \frac{2k}{3} \cdot s^{3/2}
+$$
+
+Which means the supply can be exactly recovered from the accumulated reserve:
+
+$$
+s = \left(\frac{3R}{2k}\right)^{2/3}
+$$
+
+<Callout type="technical" title="Why $n = 0.5$">
+The choice of $n$ is not aesthetic. Curves with high $n$ (linear or quadratic) penalize late buyers too harshly and create early-pump dynamics. Curves with very low $n$ (logarithmic) require huge reserves for high prices, making them capital-inefficient. $n = 0.5$ is a sensible middle ground: price grows but at sub-linear speed, which prevents early buyers from capturing the entire reserve. This is not a universal — it is a defensible compromise.
+</Callout>
+
+## Bidirectional: two directions, not one
+
+The *bidirectional* part is what the name announces and what most conventional bonding-curve schemes either omit or degrade. It means two concrete things:
+
+1. **Mint and burn at the same fair price.** The user who buys pays $f(s)$. The user who sells receives $f(s - 1)$. No additional slippage, no extractive fees. The reserve is always sufficient to honor every possible burn, because the formula itself guarantees it.
+
+2. **Full exit reversibility.** No implicit lock-up, no operational asymmetry. Any holder can convert tokens back into reserve at any time without going through a secondary market, without depending on someone else's liquidity. This dismantles the "you can't sell because there's no buyer" dynamic that defines most tokens in bear markets.
+
+The mathematical consequence is elegant. If $f$ is continuous, monotonically increasing, and the reserve is kept synchronized by construction, then the token has a **verifiable on-chain price floor**: $f(s)$. It is not a promise. It is a contract invariant.
+
+## What this changes, and what it does not
+
+What changes is the nature of the risk. A holder of a bonded token *knows* — knows, not infers — what price they receive if they decide to exit. The gap between current market price and the curve represents the speculative premium, not the total value. That premium may be zero, may be negative[^3], may be very positive in moments of demand — but the floor defined by the integral always exists.
+
+What does **not** change is the question of what the token is for. The bonding curve does not invent utility — it administers it. If the project behind the token does not produce something of real value (access, functional governance, operational service), then the token will be exactly as useful as a savings instrument with a predictable payoff curve. Which is not nothing — it is something. But it is not magic.
+
+<Callout type="warning" title="Not a panacea">
+I have seen projects use bonding curves as ornament. Curve yes, reserve no. Curve yes, vendor-locked burn rights. Curve yes, an admin multisig that can pause redemptions. Each of those details destroys the guarantee. A bonding curve without reserve auditability, without contract immutability, without the unrestricted right to burn, is theater.
+</Callout>
+
+## The ethical argument
+
+There is a normative component to this proposal that I refuse to dress up as technical. Building a token system in which a holder cannot infer their own exit is, in my view, an operational disrespect. It is outsourcing risk to people who do not have the information to evaluate it. The information asymmetry between project teams and retail buyers is, today, overwhelming. A verifiable on-chain bonding curve collapses that asymmetry to zero — not on the upside (where no system can), but on the downside, which is where the harm concentrates.
+
+Satoshi's argument was about monetary sovereignty. The argument of BTM, derived from it, is about **exit sovereignty**. If you cannot leave when you want, at the price the contract states, you do not have financial sovereignty — you have a private-club membership.
+
+## Where this goes
+
+I have been writing about this on Medium for a few years[^4]. What changed recently is the realization that the problem is not solved by more mathematical sophistication — the curves exist, the primitives exist, the audit tooling exists. What is missing is the willingness to use them.
+
+At Inverse Neural Lab we are starting a couple of BTM implementations in rural infrastructure and decentralized energy projects — where the token represents an operational right over a physical asset (electricity, connectivity, compute capacity) and the bonding curve administers emission and redemption. It is the only way I know to give a rural user — someone who does not have time to read whitepapers — a verifiable guarantee that their participation has a floor.
+
+We will publish more on this: the code, the full math, the stress simulations. If the argument interests you or you want to see where it breaks, write to us.
+
+---
+
+[^1]: Satoshi Nakamoto's Bitcoin whitepaper, October 2008, "Bitcoin: A Peer-to-Peer Electronic Cash System". The term *peer-to-peer electronic cash* is not accidental — the conceptual model is cash, not investment.
+
+[^2]: This was shown dramatically in events like the May 2022 UST/LUNA collapse. Liquidity "backed" by reflexivity collapses instantaneously when collective trust evaporates, because there was no contract invariant to hold it up.
+
+[^3]: The premium can be negative when the token trades below the curve — which opens an obvious arbitrage opportunity: buy on the secondary market, burn against the reserve. In a properly implemented bidirectional system this arbitrage closes the spread automatically.
+
+[^4]: I have covered the more technical details in posts on Medium under the handle @pablo-toksol. Some of this essay's arguments are refinements of things I wrote there.

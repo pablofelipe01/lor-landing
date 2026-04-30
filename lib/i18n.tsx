@@ -377,6 +377,7 @@ const translations = {
 
     // Navigation - B2B
     'nav.b2b': 'Empresas',
+    'nav.blog': 'Blog',
 
     // B2B Section
     'b2b.badge': 'Soluciones B2B',
@@ -877,6 +878,7 @@ const translations = {
 
     // Navigation - B2B
     'nav.b2b': 'Business',
+    'nav.blog': 'Blog',
 
     // B2B Section
     'b2b.badge': 'B2B Solutions',

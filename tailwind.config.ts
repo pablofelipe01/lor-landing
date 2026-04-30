@@ -1,10 +1,13 @@
 import type { Config } from 'tailwindcss'
+import typography from '@tailwindcss/typography'
 
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}',
+    './content/**/*.{md,mdx}',
   ],
   theme: {
     extend: {
@@ -86,9 +89,96 @@ const config: Config = {
           '100%': { opacity: '1' },
         },
       },
+      typography: ({ theme }: { theme: (path: string) => string }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.gray.700'),
+            '--tw-prose-headings': theme('colors.gray.900'),
+            '--tw-prose-lead': theme('colors.gray.700'),
+            '--tw-prose-links': theme('colors.primary.600'),
+            '--tw-prose-bold': theme('colors.gray.900'),
+            '--tw-prose-counters': theme('colors.gray.500'),
+            '--tw-prose-bullets': theme('colors.gray.300'),
+            '--tw-prose-hr': theme('colors.gray.200'),
+            '--tw-prose-quotes': theme('colors.gray.900'),
+            '--tw-prose-quote-borders': theme('colors.primary.200'),
+            '--tw-prose-captions': theme('colors.gray.500'),
+            '--tw-prose-code': theme('colors.primary.700'),
+            '--tw-prose-pre-code': theme('colors.gray.100'),
+            '--tw-prose-pre-bg': theme('colors.gray.900'),
+            '--tw-prose-th-borders': theme('colors.gray.300'),
+            '--tw-prose-td-borders': theme('colors.gray.200'),
+            maxWidth: 'none',
+            a: {
+              fontWeight: '500',
+              textDecoration: 'underline',
+              textDecorationColor: theme('colors.primary.300'),
+              textUnderlineOffset: '3px',
+              transition: 'color 150ms, text-decoration-color 150ms',
+              '&:hover': {
+                color: theme('colors.primary.700'),
+                textDecorationColor: theme('colors.primary.500'),
+              },
+            },
+            'h1, h2, h3, h4': {
+              fontFamily: theme('fontFamily.heading').toString(),
+              letterSpacing: '-0.02em',
+            },
+            'h2': {
+              marginTop: '2.5em',
+              marginBottom: '1em',
+              paddingBottom: '0.3em',
+              borderBottom: `1px solid ${theme('colors.gray.200')}`,
+            },
+            'h3': { marginTop: '2em' },
+            code: {
+              backgroundColor: theme('colors.primary.50'),
+              padding: '0.15em 0.4em',
+              borderRadius: '0.25rem',
+              fontWeight: '500',
+              fontSize: '0.9em',
+            },
+            'code::before': { content: '""' },
+            'code::after': { content: '""' },
+            'pre code': {
+              backgroundColor: 'transparent',
+              padding: '0',
+              fontWeight: '400',
+              fontSize: '0.875em',
+            },
+            pre: {
+              borderRadius: '0.75rem',
+              padding: '1.25em',
+              fontSize: '0.875em',
+              lineHeight: '1.65',
+            },
+            blockquote: {
+              fontStyle: 'normal',
+              borderLeftWidth: '3px',
+              fontWeight: '500',
+            },
+            'blockquote p:first-of-type::before': { content: '""' },
+            'blockquote p:last-of-type::after': { content: '""' },
+            img: {
+              borderRadius: '0.75rem',
+            },
+            table: {
+              fontSize: '0.9em',
+            },
+            thead: {
+              borderBottomWidth: '2px',
+            },
+            'thead th': {
+              fontWeight: '600',
+              paddingTop: '0.5em',
+              paddingBottom: '0.5em',
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [],
+  plugins: [typography],
 }
 
 export default config

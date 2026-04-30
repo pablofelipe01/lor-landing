@@ -1,0 +1,165 @@
+---
+title: "Why we chose Claude over GPT for our rural mesh network: a 12-week field comparison"
+slug: "12-week-claude-vs-gpt-rural-mesh"
+date: "2026-04-15"
+lang: "en"
+translationSlug: "12-semanas-claude-vs-gpt-mesh-rural"
+excerpt: "We A/B tested Claude and GPT as the LLM backend for a LoRa mesh network serving rural students with no cellular coverage. Latency, cost, vernacular Spanish handling, and pedagogical quality are not all equal. Here is what we observed over 12 weeks."
+tags: ["ai", "claude", "gpt", "rural-connectivity", "lora", "mesh", "telegram", "case-study"]
+category: "case-study"
+author: "Pablo F. Acebedo"
+draft: false
+---
+
+Our rural mesh deployment runs on a simple equation: one Starlink terminal, a Raspberry Pi gateway, and dozens of solar-powered LoRa nodes spread over roughly 120 km². Students in a region with no cellular coverage send questions through low-bandwidth Meshtastic packets that hop across the mesh, hit our gateway, get wrapped into a Telegram message, get answered by an LLM, and travel the same path back.
+
+The whole stack costs less than a single cellular tower's quarterly maintenance bill. But the model choice — which LLM sits behind that gateway — matters more than people think. We ran Claude and GPT side by side for 12 weeks. This is what we observed.
+
+<Callout type="info" title="Read this first">
+This is a field report, not a benchmark. We are reporting what we saw in **our** deployment with **our** users, our prompts, and our network conditions. Different inputs almost certainly produce different conclusions. We are publishing the methodology so you can replicate it for your own setup.
+</Callout>
+
+## The setup
+
+The system serves around 200 daily-active students between ages 9 and 14 across four rural schools. The hardware path is unremarkable: T1000 LoRa devices send queries through Heltec P1-Pro solar repeaters, the gateway runs `meshtasticd` on a Raspberry Pi 5, and a small Python service bridges Meshtastic packets to a Telegram bot. The bot calls the LLM and writes the answer back into the mesh.
+
+We had been running Claude in production for several months when we decided to formalize the comparison. The hypothesis from the team was: *"GPT is probably equivalent. We are paying a premium for nothing."* The point of the test was to disprove our own production choice if we could.
+
+## Methodology
+
+For 12 weeks we routed every incoming student query through two paths:
+
+- **Path A — production.** Query → Claude API → answer the student saw.
+- **Path B — shadow.** Same query → GPT API → response written to an evaluation queue, never delivered.
+
+Three teachers from the participating schools (paid for the time) blind-graded a stratified sample of 600 paired responses. They did not know which was which. We balanced the sample across four dimensions:
+
+1. **Pedagogical quality.** Does the answer scaffold understanding, or just dump a result?
+2. **Vernacular handling.** Does the model understand the way these students actually write — `"guaca'"`, `"qué mas pue'"`, words that bend Castilian Spanish into something the model has rarely seen — without forcing them to "write properly"?
+3. **Cultural specificity.** Does it recognize local crops (yuca, plátano hartón, maíz amarillo), customs, geography?
+4. **Safety.** Anything inappropriate for a 9–14 year-old, even subtly.
+
+Latency, cost, and operational reliability were measured separately, automatically, on the full traffic.
+
+## What we observed
+
+### Headline numbers
+
+| Axis | Claude | GPT | Notes |
+|------|--------|-----|-------|
+| p50 latency (gateway → LLM → gateway) | 1.9 s | 1.4 s | GPT wins, by ~500 ms. |
+| p95 latency | 4.3 s | 5.1 s | Claude wins on tail. |
+| Mean cost per query | ~\$0.0021 | ~\$0.0017 | GPT cheaper by ~20% on our prompt shape. |
+| Pedagogical quality (1–5, blind grade) | 4.3 | 3.6 | Claude wins, n = 600. |
+| Vernacular handling (1–5) | 4.5 | 3.4 | Claude wins by a wider margin than we expected. |
+| Cultural specificity (1–5) | 4.0 | 3.7 | Claude wins, marginal. |
+| Safety flags raised by graders | 2 / 600 | 11 / 600 | Mostly tone, not content. |
+| Hard refusals on legitimate queries | 4 / 600 | 9 / 600 | Both rare. |
+
+<Callout type="technical" title="A note on the cost numbers">
+These are observed costs on our prompt shape: a system prompt of ~700 tokens, queries averaging 18 tokens, responses targeted at 90–140 tokens. With heavy prompt caching enabled on Claude, the cost per query drops well below the figure above; we report the uncached steady-state for fairness, since GPT does not bill caching the same way.
+</Callout>
+
+### Latency: GPT wins, but the tail tells a different story
+
+GPT was consistently faster in the middle of the distribution. For a student waiting for a packet to come back over LoRa — where the radio leg adds 2–6 seconds — half a second on the inference side is real and noticeable.
+
+But our users do not experience the median; they experience the bad days. On the worst 5% of requests Claude was about 800 ms faster, and we saw far fewer five-second pauses. For a child squinting at a low-power e-ink display in a classroom, a tail event hurts much more than a faster median.
+
+### Cost: GPT cheaper, but we built around caching
+
+On uncached calls GPT was about 20% cheaper for our prompt shape. With Claude's prompt caching turned on for the system prompt and few-shot examples (which never change between users), our amortized cost per query collapsed by roughly 80%. After enabling cache writes on the system prompt, Claude was the cheaper option in production. None of this is a fair comparison — it is shop talk about the operational realities of each provider.
+
+### Pedagogical quality: this is where the gap opened
+
+Both models can answer the question. The difference shows up in how. We coded a sample of 200 responses by hand. A representative example, in Spanish, simplified for length:
+
+<TwoColumn>
+  <div>
+    <p className="text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">GPT</p>
+    <p className="text-sm leading-relaxed">
+      <em>"La fotosíntesis es el proceso por el cual las plantas convierten luz solar en energía química usando clorofila. La fórmula general es 6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂."</em>
+    </p>
+  </div>
+  <div>
+    <p className="text-xs uppercase tracking-wider font-semibold text-primary-700 mb-2">Claude</p>
+    <p className="text-sm leading-relaxed">
+      <em>"Buena pregunta. Mirá la planta de yuca de tu casa: cuando hay sol, está fabricando comida. La hoja chupa luz, agarra agua de la raíz, y respira un gas que está en el aire. Mezcla todo eso y le sale azúcar — que es lo que la planta usa para crecer. Si querés ver la fórmula que usan los químicos, te la muestro: ¿la querés o seguimos con yuca?"</em>
+    </p>
+  </div>
+</TwoColumn>
+
+GPT's answer is correct. Claude's answer is teachable. For a child who has never asked a teacher anything outside of their two-hour-walk-to-school window, the second one is what we want.
+
+This is not Claude being magically smarter. It is a system-prompt and tone discipline that Claude follows more reliably across thousands of edge cases. GPT followed the same instructions on the obvious cases and drifted on the harder ones — long queries, off-topic questions, queries with grammatical noise. Claude held the line.
+
+### Vernacular Spanish: the unexpected gap
+
+We expected this to be roughly equivalent. It was not. Take a query like:
+
+> *"profe yo no entiendo nada de esa vaina del aparato, qué mas pue'?"*
+
+GPT, in 11 of 30 sampled responses, would gently correct the student or switch to standard Castilian Spanish before answering. Claude almost always (28/30) answered in the same register, addressing the student as a person before addressing the academic question. This matters more than it sounds: rural students who get corrected before being heard tend to stop asking. We built this whole system to lower that activation energy. A model that increases it is misaligned with the goal, regardless of its knowledge.
+
+### Cultural specificity: marginal Claude advantage, not decisive
+
+Both models knew what yuca is. Both struggled occasionally with very local references — a particular variety of plátano hartón, a regional festival neither of us had ever heard of. Claude was slightly more likely to ask a clarifying question instead of confabulating. Both were comparable on the easy cases.
+
+## The integration
+
+The Telegram-to-LLM bridge is the heart of this system. The whole thing is about 80 lines of Python; the part that matters is below, simplified.
+
+```python
+import anthropic
+import os
+
+client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+SYSTEM_PROMPT = open("system_prompt_es.md").read()  # ~700 tokens of pedagogical guidance
+
+def answer_student(query: str, student_grade: int) -> str:
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=200,
+        system=[
+            {
+                "type": "text",
+                "text": SYSTEM_PROMPT,
+                "cache_control": {"type": "ephemeral"},  # cache the system prompt
+            }
+        ],
+        messages=[
+            {
+                "role": "user",
+                "content": f"[grade {student_grade}] {query}",
+            }
+        ],
+    )
+    return response.content[0].text
+```
+
+The whole production system fits in a single Python file because none of the moving parts had to be load-bearing. Claude handles the language, Telegram handles the messaging, Meshtastic handles the radio, the Pi handles the bridge.
+
+<Callout type="insight">
+The architectural lesson here is: **commit to one boring API per concern**. Every team I have seen that "abstracted over LLM providers" ended up with a generic-feeling product because the abstraction layer flattens the very things that distinguish models. Pick one. Tune the prompts to its strengths. Replace it later if you must.
+</Callout>
+
+## Caveats
+
+A few things this post is **not**:
+
+- This is not a benchmark. N = 600 paired responses graded by three humans is too small to publish as one.
+- It is not a claim that Claude is universally better. For coding tasks, math problems, and reasoning under English instructions, our internal evaluations split very differently. This was a pedagogical, vernacular, low-bandwidth Spanish use case.
+- The cost numbers are tightly coupled to our prompt shape and caching strategy. Yours will differ.
+
+## What we shipped
+
+After 12 weeks we kept Claude in production, with the system-prompt caching enabled and the same Telegram bridge described above. Path B was retired. The graders' notes, anonymized prompts, and per-axis distributions are available on request to other teams running comparable rural deployments.
+
+The deeper lesson is one we keep relearning at the lab: in low-resource environments, the model's behavior under stress matters more than its peak capability. Tail latency beats median latency. Tone discipline beats reasoning headroom. The model that does not break the social contract with the user — that does not correct a child before listening to them — is the model that compounds.
+
+We are already running similar comparisons on the agronomy side of the platform, where the user is a 50-year-old smallholder farmer asking about nematode infestations in cassava. The trade-offs land somewhere different there. We will write that one up too.
+
+---
+
+If you are building something in this space and want to compare notes — methodology, prompt structure, hardware costs — write to us. We are easier to reach than you would expect.
