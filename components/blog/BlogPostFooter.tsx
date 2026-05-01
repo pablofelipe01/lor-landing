@@ -6,8 +6,8 @@ import {
   CATEGORY_LABELS,
   UI_LABELS,
 } from '@/lib/blog/types'
+import { FollowCTA } from './FollowCTA'
 import { LanguageSwitcher } from './LanguageSwitcher'
-import { NewsletterCTA } from './NewsletterCTA'
 import { ShareButtons } from './ShareButtons'
 
 interface BlogPostFooterProps {
@@ -82,8 +82,8 @@ export function BlogPostFooter({
           </p>
         </section>
 
-        {/* Newsletter */}
-        <NewsletterCTA lang={post.lang} />
+        {/* Follow channels */}
+        <FollowCTA lang={post.lang} />
 
         {/* Related */}
         {related.length > 0 ? (

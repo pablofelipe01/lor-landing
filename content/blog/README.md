@@ -220,16 +220,24 @@ Las **categorías** son un set cerrado (4 valores). Pensá la categoría como el
 
 Los **tags** son libres. Mantenelos en lower-kebab-case y reutilizá los existentes cuando puedas (mirá los posts publicados en `/blog/` para ver cuáles ya circulan).
 
-## RSS y Medium
+## Estrategia de canales
 
-El blog publica RSS automáticamente:
+El blog en `inverseneurallab.com/blog` es el **hogar canónico** del contenido. Los demás canales son distribución secundaria:
 
-- Español: `https://www.inverseneurallab.com/blog/feed.xml`
-- Inglés: `https://www.inverseneurallab.com/en/blog/feed.xml`
+- **Medium** (`@pablo-toksol`) — distribución secundaria. Cuando republiques un post acá en Medium, agregale el canonical link apuntando a la URL de este blog para no fragmentar la señal SEO.
+- **RSS** — feed activo en `/blog/feed.xml` (ES) y `/en/blog/feed.xml` (EN). Sirve para lectores RSS estándar y deja la puerta abierta a conectar más adelante a Buttondown / Substack / Beehiiv como fuente.
+- **LinkedIn** — espacio para discusión y comentarios sobre cada post publicado.
+- **Newsletter por email** — postergada. Cuando se agregue, se va a crear un componente `NewsletterCTA` aparte (ese nombre está reservado).
 
-Esto sirve para lectores RSS estándar (Feedly, NetNewsWire, etc.) y queda listo si más adelante se conecta a una herramienta tipo Buttondown / Substack / Beehiiv como fuente RSS.
+### El componente `FollowCTA`
 
-El CTA "Más en Medium" en cada post enlaza a `https://medium.com/@pablo-toksol`, donde se publica material long-form complementario. Se controla vía `NEXT_PUBLIC_MEDIUM_URL` en `.env.local`.
+Cada post incluye al pie un componente `FollowCTA` que muestra los tres canales activos (Medium, RSS, LinkedIn) en cards lado a lado, con el copy en el idioma del post. Vive en `components/blog/FollowCTA.tsx` y consume:
+
+- `NEXT_PUBLIC_MEDIUM_URL` — default `https://medium.com/@pablo-toksol`
+- `NEXT_PUBLIC_LINKEDIN_URL` — default `https://www.linkedin.com/in/pablo-f-acebedo/`
+- El RSS se elige automáticamente según `lang`
+
+Si en algún momento querés cambiar la copy o agregar/quitar canales, está todo en `lib/blog/types.ts` (objeto `UI_LABELS`) y en el array `channels` del propio componente.
 
 ## Validación previa al merge
 

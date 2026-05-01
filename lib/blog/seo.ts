@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { AUTHOR_NAME, SITE_NAME, SITE_URL } from './config'
+import { AUTHOR_NAME, LINKEDIN_URL, SITE_NAME, SITE_URL } from './config'
 import { getPostBySlug, getTranslation } from './posts'
 import { BLOG_PATH, BlogLang, BlogPostMeta } from './types'
 
@@ -139,7 +139,7 @@ export function buildJsonLdArticle(post: BlogPostMeta): string {
     author: {
       '@type': 'Person',
       name: post.author,
-      url: 'https://www.linkedin.com/in/pablo-f-acebedo/',
+      url: LINKEDIN_URL,
     },
     publisher: {
       '@type': 'Organization',

@@ -5,7 +5,9 @@ export const SITE_URL = (
 export const MEDIUM_URL =
   process.env.NEXT_PUBLIC_MEDIUM_URL || 'https://medium.com/@pablo-toksol'
 
-export const LINKEDIN_URL = 'https://www.linkedin.com/in/pablo-f-acebedo/'
+export const LINKEDIN_URL =
+  process.env.NEXT_PUBLIC_LINKEDIN_URL ||
+  'https://www.linkedin.com/in/pablo-f-acebedo/'
 
 export const AUTHOR_NAME = 'Pablo F. Acebedo'
 
