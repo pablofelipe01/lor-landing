@@ -35,7 +35,7 @@ Before arriving at 915 MHz, it is worth mapping the full set of options for long
 
 | Alternative | Effective range | License required | Power limit | Infrastructure cost | Rural LATAM verdict |
 |---|---|---|---|---|---|
-| LoRa 433 MHz | Theoretically long, practically <200 m | No | -22.4 dBm (Region 2) | Low | Unviable outdoors |
+| LoRa 433 MHz | Theoretically long, practically &lt;200 m | No | -22.4 dBm (Region 2) | Low | Unviable outdoors |
 | LoRa 915 MHz | 3–10 km per node | No | Up to +30 dBm (ISM) | Low | Viable |
 | Cellular LTE | Variable, tower-dependent | Yes (licensed spectrum) | High, operator-managed | $85,000–170,000/tower | Unviable in sparse areas |
 | NB-IoT | 1–10 km (depends on coverage) | Yes (requires operator) | Managed by network | Requires existing cellular | Dependent on prior coverage |
@@ -61,13 +61,15 @@ The architecture INL uses connects the elements like this:
 
 ```mermaid
 graph LR
-    A[Starlink] --> B[Gateway\nRaspberry Pi 5]
-    B <-->|LoRa 915 MHz| C[Repeater\nP1-Pro Solar]
-    B <-->|LoRa 915 MHz| D[Repeater\nP1-Pro Solar]
-    C <-->|LoRa 915 MHz| E[T1000\nStudent]
-    C <-->|LoRa 915 MHz| F[T1000\nStudent]
-    D <-->|LoRa 915 MHz| G[T1000\nFarmer]
-    B -->|Telegram Bot\n+ Claude API| A
+    A[Starlink] --> B[Gateway Raspberry Pi 5]
+    B -->|LoRa 915 MHz| C[Repeater P1-Pro Solar]
+    C -->|LoRa 915 MHz| B
+    B -->|LoRa 915 MHz| D[Repeater P1-Pro Solar]
+    D -->|LoRa 915 MHz| B
+    C -->|LoRa 915 MHz| E[T1000 Student]
+    C -->|LoRa 915 MHz| F[T1000 Student]
+    D -->|LoRa 915 MHz| G[T1000 Farmer]
+    B -->|Telegram + Claude API| A
 ```
 
 The initial infrastructure cost to cover an area of 100+ km² with this model: between **$400 and $600**. For reference, the quarterly maintenance cost of a single cellular tower in Colombia exceeds that figure.
