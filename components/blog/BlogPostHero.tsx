@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   BLOG_PATH,
@@ -73,6 +74,19 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
               </Link>
             ))}
           </div>
+
+          {post.coverImage && (
+            <div className="mt-10 relative w-full aspect-video rounded-xl overflow-hidden shadow-md">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+            </div>
+          )}
         </div>
       </div>
     </header>
