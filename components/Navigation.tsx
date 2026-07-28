@@ -31,7 +31,8 @@ export function Navigation() {
     { label: t('nav.roadmap'), href: anchor(sectionIds.roadmap) },
     { label: t('nav.faq'), href: anchor(sectionIds.faq) },
     { label: t('nav.blog'), href: isEnBlog ? '/en/blog/' : '/blog/', isLink: true },
-    { label: t('nav.b2b'), href: anchor(sectionIds.b2b), highlight: true },
+    // Seccion empresarial desactivada temporalmente
+    // { label: t('nav.b2b'), href: anchor(sectionIds.b2b), highlight: true },
   ]
 
   useEffect(() => {

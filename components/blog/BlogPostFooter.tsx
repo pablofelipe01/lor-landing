@@ -70,14 +70,16 @@ export function BlogPostFooter({
               className="text-primary-700 hover:text-primary-800 font-semibold underline decoration-primary-300 underline-offset-2"
             >
               {labels.ctaSoftLink}
-            </Link>{' '}
-            {labels.ctaSoftOr}{' '}
+            </Link>
+            {/* Enlace a la seccion empresarial (#empresas) desactivado temporalmente
+            {' '}{labels.ctaSoftOr}{' '}
             <Link
               href={post.lang === 'es' ? '/#empresas' : '/#empresas'}
               className="text-primary-700 hover:text-primary-800 font-semibold underline decoration-primary-300 underline-offset-2"
             >
               {labels.ctaSoftDemo}
             </Link>
+            */}
             .
           </p>
         </section>

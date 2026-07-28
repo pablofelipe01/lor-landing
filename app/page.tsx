@@ -10,7 +10,7 @@ import {
   Funding,
   FAQ,
   Footer,
-  B2B,
+  // B2B, // Seccion empresarial desactivada temporalmente
 } from '@/components'
 
 export default function Home() {
@@ -27,7 +27,9 @@ export default function Home() {
         <Roadmap />
         <Funding />
         <FAQ />
+        {/* Seccion empresarial desactivada temporalmente
         <B2B />
+        */}
       </main>
       <Footer />
     </>
