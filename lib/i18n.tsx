@@ -283,7 +283,6 @@ const translations = {
     'problem.stat2Suffix': 'M',
     'problem.stat2Label2': 'Estudiantes rurales',
     'problem.stat2Desc2': 'Sin acceso a recursos educativos digitales',
-    'problem.stat3Prefix': '',
     'problem.stat3Value2': '220',
     'problem.stat3Suffix': 'M',
     'problem.stat3Label2': 'Toneladas perdidas',
@@ -759,7 +758,6 @@ const translations = {
     'problem.stat2Suffix': 'M',
     'problem.stat2Label2': 'Rural students',
     'problem.stat2Desc2': 'Without access to digital educational resources',
-    'problem.stat3Prefix': '',
     'problem.stat3Value2': '220',
     'problem.stat3Suffix': 'M',
     'problem.stat3Label2': 'Tons lost',
@@ -983,7 +981,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }
 
   const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations['es']] || key
+    return translations[language][key as keyof typeof translations['es']] ?? key
   }
 
   return (
