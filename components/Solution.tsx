@@ -18,7 +18,6 @@ export function Solution() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      cost: t('solution.component1Cost'),
     },
     {
       name: t('solution.component2Name'),
@@ -28,7 +27,6 @@ export function Solution() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
         </svg>
       ),
-      cost: t('solution.component2Cost'),
     },
     {
       name: t('solution.component3Name'),
@@ -38,7 +36,6 @@ export function Solution() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
       ),
-      cost: t('solution.component3Cost'),
     },
     {
       name: t('solution.component4Name'),
@@ -48,7 +45,6 @@ export function Solution() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
       ),
-      cost: t('solution.component4Cost'),
     },
   ]
 
@@ -99,23 +95,11 @@ export function Solution() {
                   {component.icon}
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-semibold text-gray-900">{component.name}</h4>
-                    <span className="text-sm font-mono font-bold text-primary-600">{component.cost}</span>
-                  </div>
+                  <h4 className="font-semibold text-gray-900">{component.name}</h4>
                   <p className="text-sm text-gray-600 mt-1">{component.description}</p>
                 </div>
               </motion.div>
             ))}
-
-            {/* Total cost */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl text-white">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold">{t('solution.totalCost')}</span>
-                <span className="text-2xl font-bold font-mono">{t('solution.totalCostValue')}</span>
-              </div>
-              <p className="text-sm opacity-80 mt-1">{t('solution.totalCostCompare')}</p>
-            </div>
           </motion.div>
 
           {/* Architecture diagram */}

@@ -46,7 +46,7 @@ export function Impact() {
     { stat: '0.15%', description: t('impact.gdpGrowth1') },
     { stat: '1.38%', description: t('impact.gdpGrowth2') },
     { stat: '15-20%', description: t('impact.betterPrices') },
-    { stat: '$500B', description: t('impact.additionalGDP') },
+    { stat: '36 pts', description: t('impact.divideToClose') },
   ]
 
   return (

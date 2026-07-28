@@ -5,7 +5,7 @@ import { Providers } from './providers'
 export const metadata: Metadata = {
   metadataBase: new URL('https://lor-landing.vercel.app'),
   title: 'Conectividad Rural LATAM | Redes Mesh LoRa + IA para America Latina',
-  description: 'Sistema de bajo costo que lleva seguridad infantil, educacion inteligente y asistencia agricola a zonas rurales sin cobertura movil. 100x mas economico que torres celulares. Conectando 180 millones de personas.',
+  description: 'Sistema descentralizado que lleva seguridad infantil, educacion inteligente y asistencia agricola a zonas rurales sin cobertura movil, sin torres celulares ni fibra optica. Conectando 180 millones de personas.',
   keywords: [
     'conectividad rural',
     'mesh LoRa',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: 'https://conectividad-rural.vercel.app',
     siteName: 'Conectividad Rural LATAM',
     title: 'Conectividad Rural LATAM | Redes Mesh LoRa + IA',
-    description: 'Sistema de bajo costo que conecta 180 millones de personas rurales con seguridad, educacion e IA. 100x mas economico que torres celulares.',
+    description: 'Sistema descentralizado que conecta 180 millones de personas rurales con seguridad, educacion e IA. Sin torres celulares ni fibra optica.',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Conectividad Rural LATAM | Redes Mesh LoRa + IA',
-    description: 'Conectando 180 millones de personas rurales con seguridad, educacion e IA. 100x mas economico.',
+    description: 'Conectando 180 millones de personas rurales con seguridad, educacion e IA. Sin torres celulares.',
     images: ['/images/og-image.jpg'],
   },
   robots: {

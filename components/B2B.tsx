@@ -18,15 +18,6 @@ interface CalculatorResults {
   extraNodes: number
   extraRepeaters: number
   coverageGuaranteed: number
-  licenseINL: number
-  additionalNodesCost: number
-  additionalRepeatersCost: number
-  flutterApp: number
-  annualMaintenance: number
-  totalInitial: number
-  satelliteCost3Years: number
-  radiosCost: number
-  savings3Years: number
   isValid: boolean
   errors: string[]
 }
@@ -42,8 +33,6 @@ const countriesData = [
 
 // Comparison table data
 const comparisonFeatures = [
-  { key: 'compInitialInvestment', inl: '$14K', satellite: '$108K', radios: '$15K', cellular: '$500K-2M' },
-  { key: 'compMonthlyCost', inl: '$83', satellite: '$4-6K', radios: '$0', cellular: '$5-15K' },
   { key: 'compRange', inl: '100-200km²', satellite: 'globalLimited', radios: '5-15km', cellular: '5-20km/torre' },
   { key: 'compDataTransmission', inl: 'yes', satellite: 'yes', radios: 'voiceOnly', cellular: 'yes' },
   { key: 'compMeshInternet', inl: 'meshInternetFull', satellite: 'meshInternetNA', radios: 'no', cellular: 'meshInternetOneWay' },
@@ -52,8 +41,7 @@ const comparisonFeatures = [
   { key: 'compAI', inl: 'included', satellite: 'extra', radios: 'no', cellular: 'extra' },
   { key: 'compImplementation', inl: '3-4 sem', satellite: '1-2 meses', radios: '1-2 sem', cellular: '12-36 meses' },
   { key: 'compOwnership', inl: 'clientOwned', satellite: 'rented', radios: 'yes', cellular: 'partial' },
-  { key: 'compScalability', inl: 'costDecreases', satellite: 'linear', radios: 'partial', cellular: 'no' },
-  { key: 'compROI', inl: '1-2 meses', satellite: 'never', radios: '6-12 meses', cellular: '10+ anos' },
+  { key: 'compScalability', inl: 'modular', satellite: 'linear', radios: 'partial', cellular: 'no' },
   { key: 'compOffline', inl: 'yes', satellite: 'no', radios: 'yes', cellular: 'no' },
 ]
 
@@ -65,8 +53,8 @@ const latinAmericanCountries = [
   'Uruguay', 'Venezuela'
 ]
 
-// Calculator logic
-function calculateInvestment(inputs: CalculatorInputs): CalculatorResults {
+// Network sizing logic
+function calculateNetwork(inputs: CalculatorInputs): CalculatorResults {
   const errors: string[] = []
 
   // Validation
@@ -82,15 +70,6 @@ function calculateInvestment(inputs: CalculatorInputs): CalculatorResults {
       extraNodes: 0,
       extraRepeaters: 0,
       coverageGuaranteed: 0,
-      licenseINL: 10000,
-      additionalNodesCost: 0,
-      additionalRepeatersCost: 0,
-      flutterApp: 3000,
-      annualMaintenance: 1000,
-      totalInitial: 0,
-      satelliteCost3Years: 0,
-      radiosCost: 0,
-      savings3Years: 0,
       isValid: false,
       errors,
     }
@@ -127,40 +106,14 @@ function calculateInvestment(inputs: CalculatorInputs): CalculatorResults {
     totalCoverage = ((repeatersBase * 500) + nodeCoverage) * terrainFactor
   }
 
-  // Calculate extra hardware beyond what's included in license
+  // Extra hardware beyond the base configuration
   const extraNodes = Math.max(0, inputs.workers - 20)
   const extraRepeaters = Math.max(0, repeatersBase - 3)
-
-  // Costs
-  const licenseINL = 10000
-  const additionalNodesCost = extraNodes * 40
-  const additionalRepeatersCost = extraRepeaters * 110
-  const flutterApp = 3000
-  const annualMaintenance = 1000
-
-  const totalInitial = licenseINL + additionalNodesCost + additionalRepeatersCost + flutterApp
-
-  // Comparisons
-  const satelliteCost3Years = (inputs.workers * 50 * 36) + (inputs.workers * 1500)
-  const radiosCost = inputs.workers * 300
-
-  // Savings (3 years: initial + 3x maintenance vs satellite)
-  const totalCost3Years = totalInitial + (annualMaintenance * 3)
-  const savings3Years = satelliteCost3Years - totalCost3Years
 
   return {
     extraNodes,
     extraRepeaters,
     coverageGuaranteed: Math.round(totalCoverage),
-    licenseINL,
-    additionalNodesCost,
-    additionalRepeatersCost,
-    flutterApp,
-    annualMaintenance,
-    totalInitial,
-    satelliteCost3Years,
-    radiosCost,
-    savings3Years,
     isValid: true,
     errors: [],
   }
@@ -169,16 +122,6 @@ function calculateInvestment(inputs: CalculatorInputs): CalculatorResults {
 // Format number with thousand separators
 function formatNumber(num: number): string {
   return new Intl.NumberFormat('es-ES').format(num)
-}
-
-// Format currency
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
 }
 
 export function B2B() {
@@ -206,7 +149,7 @@ export function B2B() {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   // Calculate results
-  const results = useMemo(() => calculateInvestment(inputs), [inputs])
+  const results = useMemo(() => calculateNetwork(inputs), [inputs])
 
   // Handle calculator input change
   const handleInputChange = (field: keyof CalculatorInputs, value: string | number) => {
@@ -232,7 +175,7 @@ export function B2B() {
 
   // Render comparison cell value
   const renderCellValue = (value: string) => {
-    const translatedValues = ['yes', 'no', 'partial', 'voiceOnly', 'generic', 'extra', 'tailorMade', 'included', 'rented', 'clientOwned', 'costDecreases', 'linear', 'never', 'globalLimited', 'aes256', 'meshInternetFull', 'meshInternetNA', 'meshInternetOneWay']
+    const translatedValues = ['yes', 'no', 'partial', 'voiceOnly', 'generic', 'extra', 'tailorMade', 'included', 'rented', 'clientOwned', 'modular', 'linear', 'never', 'globalLimited', 'aes256', 'meshInternetFull', 'meshInternetNA', 'meshInternetOneWay']
 
     if (translatedValues.includes(value)) {
       const translated = t(`b2b.${value}`)
@@ -526,70 +469,6 @@ export function B2B() {
                         <span className="ml-2 font-bold text-green-600">{formatNumber(results.coverageGuaranteed)} {t('b2b.hectaresUnit')}</span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Cost Breakdown */}
-                  <div className="bg-white rounded-xl p-4">
-                    <h4 className="font-semibold text-slate-800 mb-3">{t('b2b.costBreakdown')}</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">{t('b2b.licenseINL')}</span>
-                        <span className="font-medium">{formatCurrency(results.licenseINL)}</span>
-                      </div>
-                      {results.additionalNodesCost > 0 && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">{t('b2b.additionalNodes')} ({results.extraNodes} x $40)</span>
-                          <span className="font-medium">{formatCurrency(results.additionalNodesCost)}</span>
-                        </div>
-                      )}
-                      {results.additionalRepeatersCost > 0 && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">{t('b2b.additionalRepeaters')} ({results.extraRepeaters} x $110)</span>
-                          <span className="font-medium">{formatCurrency(results.additionalRepeatersCost)}</span>
-                        </div>
-                      )}
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">{t('b2b.flutterApp')}</span>
-                        <span className="font-medium">{formatCurrency(results.flutterApp)}</span>
-                      </div>
-                      <div className="flex justify-between text-slate-500 text-xs pt-2 border-t">
-                        <span>{t('b2b.annualMaintenance')}</span>
-                        <span>{formatCurrency(results.annualMaintenance)}/año</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Total */}
-                  <div className="bg-primary-600 text-white rounded-xl p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold">{t('b2b.totalInitial')}</span>
-                      <span className="text-2xl font-bold">{formatCurrency(results.totalInitial)}</span>
-                    </div>
-                  </div>
-
-                  {/* Comparison */}
-                  <div className="bg-white rounded-xl p-4">
-                    <h4 className="font-semibold text-slate-800 mb-3">{t('b2b.comparisonTitle')}</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">{t('b2b.vsSatellite')}</span>
-                        <span className="font-medium text-red-600">{formatCurrency(results.satelliteCost3Years)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">{t('b2b.vsRadios')}</span>
-                        <span className="font-medium">{formatCurrency(results.radiosCost)}</span>
-                      </div>
-                      <div className="flex justify-between pt-2 border-t border-green-200 bg-green-50 -mx-4 px-4 py-2 rounded-b-lg">
-                        <span className="font-semibold text-green-800">{t('b2b.savings3Years')}</span>
-                        <span className="font-bold text-green-600 text-lg">{formatCurrency(results.savings3Years)}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* ROI */}
-                  <div className="text-center">
-                    <span className="text-slate-600">{t('b2b.roiEstimated')}:</span>
-                    <span className="ml-2 text-2xl font-bold text-primary-600">{t('b2b.roiValue')}</span>
                   </div>
 
                   {/* CTA */}

@@ -10,15 +10,9 @@ export function Comparison() {
 
   const infrastructureRows = [
     {
-      feature: t('comparison.initialCost'),
-      traditional: '$85,000 - $170,000',
-      ours: '$400 - $600',
-      highlight: true,
-    },
-    {
-      feature: t('comparison.operatingCost'),
-      traditional: '$5,000 - $10,000',
-      ours: '$118/mes',
+      feature: t('comparison.infraRequired'),
+      traditional: 'Torres y obra civil',
+      ours: 'Nodos solares',
       highlight: true,
     },
     {
@@ -73,12 +67,6 @@ export function Comparison() {
       better: 'ours',
     },
     {
-      feature: t('comparison.costPerStudent'),
-      traditional: '$20 - $50',
-      ours: '<$1',
-      better: 'ours',
-    },
-    {
       feature: t('comparison.requiresMobile'),
       traditional: 'Si',
       ours: 'No',
@@ -106,16 +94,16 @@ export function Comparison() {
 
           <div className="relative z-10 grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-5xl md:text-6xl font-bold font-mono">100-200x</div>
-              <div className="mt-2 text-primary-100">{t('comparison.costReduction')}</div>
+              <div className="text-5xl md:text-6xl font-bold font-mono">2-15 km</div>
+              <div className="mt-2 text-primary-100">{t('comparison.nodeRange')}</div>
             </div>
             <div>
               <div className="text-5xl md:text-6xl font-bold font-mono">100x</div>
               <div className="mt-2 text-primary-100">{t('comparison.fasterImplementation')}</div>
             </div>
             <div>
-              <div className="text-5xl md:text-6xl font-bold font-mono">&lt;$1</div>
-              <div className="mt-2 text-primary-100">{t('comparison.perStudent')}</div>
+              <div className="text-5xl md:text-6xl font-bold font-mono">0</div>
+              <div className="mt-2 text-primary-100">{t('comparison.towersRequired')}</div>
             </div>
           </div>
         </motion.div>
