@@ -83,12 +83,17 @@ export function Hero() {
                   href="https://map-security.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-primary-300 hover:text-primary-600 transition-colors"
+                  aria-label={t('hero.satellites')}
+                  title={t('hero.satellites')}
+                  className="inline-flex items-center justify-center p-3 bg-white border-2 border-gray-200 text-gray-700 rounded-xl hover:border-primary-300 hover:text-primary-600 transition-colors"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M13 7 9 3 5 7l4 4" />
+                    <path d="m17 11 4 4-4 4-4-4" />
+                    <path d="m8 12 4 4 6-6-4-4Z" />
+                    <path d="m16 8 3-3" />
+                    <path d="M9 21a6 6 0 0 0-6-6" />
                   </svg>
-                  {t('hero.satellites')}
                 </a>
               </div>
 

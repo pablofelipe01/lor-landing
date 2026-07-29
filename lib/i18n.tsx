@@ -42,7 +42,7 @@ const translations = {
     'hero.stat3Label': 'Implementacion',
     'hero.cta': 'Financiar Proyecto',
     'hero.watchVideo': 'Ver Video',
-    'hero.satellites': 'Satelites',
+    'hero.satellites': 'Satélites',
     'hero.imageAlt': 'Nina rural caminando a la escuela con dispositivo de seguridad',
     'hero.notification': 'Maria llego a Escuela El Cacao',
     'hero.notificationTime': 'Hace 2 minutos - GPS confirmado',
